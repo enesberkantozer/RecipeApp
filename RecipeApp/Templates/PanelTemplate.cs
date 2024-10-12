@@ -49,15 +49,13 @@
             label2.TabIndex = 1;
             if (sure > 3600)
             {
-                sure %= 3600;
-                label2.Text = sure.ToString() + " saat ";
+                label2.Text += (sure/3600).ToString() + " saat ";
             }
             if (sure > 60)
             {
-                sure %= 60;
-                label2.Text = sure.ToString() + " dakika ";
+                label2.Text += (sure/60%60).ToString() + " dakika ";
             }
-            label2.Text = sure.ToString() + " saniye";
+            label2.Text += (sure%60).ToString() + " saniye";
             label2.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // label3

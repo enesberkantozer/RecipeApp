@@ -2,14 +2,14 @@
 {
     public class RecipeProduct
     {
-        public Recipe Tarif { get; set; }
-        public Malzeme Malzeme { get; set; }
-        public double MalzemeMiktar { get; set; }
-        public RecipeProduct(Recipe tarif, Malzeme malzeme, double malzemeMiktar)
+        public Recipe Recipe { get; set; }
+        public Product Product { get; set; }
+        public double ProductCost { get; set; }
+        public RecipeProduct(Recipe recipe, Product product, double productCost)
         {
-            Tarif = tarif;
-            Malzeme = malzeme;
-            MalzemeMiktar = malzemeMiktar;
+            this.Recipe = recipe;
+            this.Product = product;
+            this.ProductCost = productCost;
         }
     }
 }

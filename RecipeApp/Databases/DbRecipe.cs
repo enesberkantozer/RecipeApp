@@ -6,10 +6,10 @@ namespace RecipeApp.Databases
     public class DbRecipe
     {
         private readonly string connString = "Data Source=ENESBERKANT-PC\\SQLEXPRESS;Initial Catalog=TarifApp;Integrated Security=True;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False";
-        List<Recipe> tarifs = new List<Recipe>();
+        List<Recipe> recipes = new List<Recipe>();
         public List<Recipe> GetAll()
         {
-            tarifs.Clear();
+            recipes.Clear();
             using (SqlConnection conn = new SqlConnection(connString))
             {
                 conn.Open();
@@ -20,17 +20,17 @@ namespace RecipeApp.Databases
                     {
                         while (reader.Read())
                         {
-                            Recipe tarif = new Recipe((int)reader["TarifID"], (string)reader["TarifAdi"], (string)reader["Kategori"], (int)reader["HazirlanmaSuresi"], (string)reader["Talimatlar"]);
-                            tarifs.Add(tarif);
+                            Recipe recipe = new Recipe((int)reader["TarifID"], (string)reader["TarifAdi"], (string)reader["Kategori"], (int)reader["HazirlanmaSuresi"], (string)reader["Talimatlar"]);
+                            recipes.Add(recipe);
                         }
                     }
                 }
             }
-            return tarifs;
+            return recipes;
         }
         public List<Recipe> GetWithId(int id)
         {
-            tarifs.Clear();
+            recipes.Clear();
             using (SqlConnection conn = new SqlConnection(connString))
             {
                 conn.Open();
@@ -41,17 +41,17 @@ namespace RecipeApp.Databases
                     {
                         while (reader.Read())
                         {
-                            Recipe tarif = new Recipe((int)reader["TarifID"], (string)reader["TarifAdi"], (string)reader["Kategori"], (int)reader["HazirlanmaSuresi"], (string)reader["Talimatlar"]);
-                            tarifs.Add(tarif);
+                            Recipe recipe = new Recipe((int)reader["TarifID"], (string)reader["TarifAdi"], (string)reader["Kategori"], (int)reader["HazirlanmaSuresi"], (string)reader["Talimatlar"]);
+                            recipes.Add(recipe);
                         }
                     }
                 }
             }
-            return tarifs;
+            return recipes;
         }
         public List<Recipe> GetWithName(string name)
         {
-            tarifs.Clear();
+            recipes.Clear();
             using (SqlConnection conn = new SqlConnection(connString))
             {
                 conn.Open();
@@ -62,17 +62,17 @@ namespace RecipeApp.Databases
                     {
                         while (reader.Read())
                         {
-                            Recipe tarif = new Recipe((int)reader["TarifID"], (string)reader["TarifAdi"], (string)reader["Kategori"], (int)reader["HazirlanmaSuresi"], (string)reader["Talimatlar"]);
-                            tarifs.Add(tarif);
+                            Recipe recipe = new Recipe((int)reader["TarifID"], (string)reader["TarifAdi"], (string)reader["Kategori"], (int)reader["HazirlanmaSuresi"], (string)reader["Talimatlar"]);
+                            recipes.Add(recipe);
                         }
                     }
                 }
             }
-            return tarifs;
+            return recipes;
         }
         public List<Recipe> GetWithCategory(string category)
         {
-            tarifs.Clear();
+            recipes.Clear();
             using (SqlConnection conn = new SqlConnection(connString))
             {
                 conn.Open();
@@ -83,17 +83,17 @@ namespace RecipeApp.Databases
                     {
                         while (reader.Read())
                         {
-                            Recipe tarif = new Recipe((int)reader["TarifID"], (string)reader["TarifAdi"], (string)reader["Kategori"], (int)reader["HazirlanmaSuresi"], (string)reader["Talimatlar"]);
-                            tarifs.Add(tarif);
+                            Recipe recipe = new Recipe((int)reader["TarifID"], (string)reader["TarifAdi"], (string)reader["Kategori"], (int)reader["HazirlanmaSuresi"], (string)reader["Talimatlar"]);
+                            recipes.Add(recipe);
                         }
                     }
                 }
             }
-            return tarifs;
+            return recipes;
         }
         public List<Recipe> GetWithTime(int time)
         {
-            tarifs.Clear();
+            recipes.Clear();
             using (SqlConnection conn = new SqlConnection(connString))
             {
                 conn.Open();
@@ -104,17 +104,17 @@ namespace RecipeApp.Databases
                     {
                         while (reader.Read())
                         {
-                            Recipe tarif = new Recipe((int)reader["TarifID"], (string)reader["TarifAdi"], (string)reader["Kategori"], (int)reader["HazirlanmaSuresi"], (string)reader["Talimatlar"]);
-                            tarifs.Add(tarif);
+                            Recipe recipe = new Recipe((int)reader["TarifID"], (string)reader["TarifAdi"], (string)reader["Kategori"], (int)reader["HazirlanmaSuresi"], (string)reader["Talimatlar"]);
+                            recipes.Add(recipe);
                         }
                     }
                 }
             }
-            return tarifs;
+            return recipes;
         }
         public List<Recipe> GetWithDescription(string description)
         {
-            tarifs.Clear();
+            recipes.Clear();
             using (SqlConnection conn = new SqlConnection(connString))
             {
                 conn.Open();
@@ -125,15 +125,15 @@ namespace RecipeApp.Databases
                     {
                         while (reader.Read())
                         {
-                            Recipe tarif = new Recipe((int)reader["TarifID"], (string)reader["TarifAdi"], (string)reader["Kategori"], (int)reader["HazirlanmaSuresi"], (string)reader["Talimatlar"]);
-                            tarifs.Add(tarif);
+                            Recipe recipe = new Recipe((int)reader["TarifID"], (string)reader["TarifAdi"], (string)reader["Kategori"], (int)reader["HazirlanmaSuresi"], (string)reader["Talimatlar"]);
+                            recipes.Add(recipe);
                         }
                     }
                 }
             }
-            return tarifs;
+            return recipes;
         }
-        public bool Save(Recipe tarif)
+        public bool Save(Recipe recipe)
         {
             using (SqlConnection conn = new SqlConnection(connString))
             {
@@ -141,10 +141,10 @@ namespace RecipeApp.Databases
                 string command = "INSERT INTO Tarif (TarifAdi,Kategori,HazirlanmaSuresi,Talimatlar) VALUES (@TarifAdi,@Kategori,@HazirlanmaSuresi,@Talimatlar)";
                 using (SqlCommand cmd = new SqlCommand(command, conn))
                 {
-                    cmd.Parameters.AddWithValue("@TarifAdi", tarif.Name);
-                    cmd.Parameters.AddWithValue("@Kategori", tarif.Category);
-                    cmd.Parameters.AddWithValue("@HazirlanmaSuresi", tarif.Time);
-                    cmd.Parameters.AddWithValue("@Talimatlar", tarif.Description);
+                    cmd.Parameters.AddWithValue("@TarifAdi", recipe.Name);
+                    cmd.Parameters.AddWithValue("@Kategori", recipe.Category);
+                    cmd.Parameters.AddWithValue("@HazirlanmaSuresi", recipe.Time);
+                    cmd.Parameters.AddWithValue("@Talimatlar", recipe.Description);
                     int isSucess = cmd.ExecuteNonQuery();
                     if (isSucess == 1)
                     {

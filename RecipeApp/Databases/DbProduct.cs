@@ -6,10 +6,10 @@ namespace RecipeApp.Databases
     public class DbProduct
     {
         private readonly string connString = "Data Source=ENESBERKANT-PC\\SQLEXPRESS;Initial Catalog=TarifApp;Integrated Security=True;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False";
-        List<Malzeme> malzemes = new List<Malzeme>();
-        public List<Malzeme> GetAll()
+        List<Product> products = new List<Product>();
+        public List<Product> GetAll()
         {
-            malzemes.Clear();
+            products.Clear();
             using (SqlConnection conn = new SqlConnection(connString))
             {
                 conn.Open();
@@ -20,17 +20,17 @@ namespace RecipeApp.Databases
                     {
                         while (reader.Read())
                         {
-                            Malzeme malzeme = new Malzeme((int)reader["MalzemeID"], (string)reader["MalzemeAdi"], (string)reader["ToplamMiktar"], (string)reader["MalzemeBirim"], (double)reader["BirimFiyat"]);
-                            malzemes.Add(malzeme);
+                            Product product = new Product((int)reader["MalzemeID"], (string)reader["MalzemeAdi"], (string)reader["ToplamMiktar"], (string)reader["MalzemeBirim"], (double)reader["BirimFiyat"]);
+                            products.Add(product);
                         }
                     }
                 }
             }
-            return malzemes;
+            return products;
         }
-        public List<Malzeme> GetWithId(int id)
+        public List<Product> GetWithId(int id)
         {
-            malzemes.Clear();
+            products.Clear();
             using (SqlConnection conn = new SqlConnection(connString))
             {
                 conn.Open();
@@ -41,17 +41,17 @@ namespace RecipeApp.Databases
                     {
                         while (reader.Read())
                         {
-                            Malzeme malzeme = new Malzeme((int)reader["MalzemeID"], (string)reader["MalzemeAdi"], (string)reader["ToplamMiktar"], (string)reader["MalzemeBirim"], (double)reader["BirimFiyat"]);
-                            malzemes.Add(malzeme);
+                            Product product = new Product((int)reader["MalzemeID"], (string)reader["MalzemeAdi"], (string)reader["ToplamMiktar"], (string)reader["MalzemeBirim"], (double)reader["BirimFiyat"]);
+                            products.Add(product);
                         }
                     }
                 }
             }
-            return malzemes;
+            return products;
         }
-        public List<Malzeme> GetWithName(string name)
+        public List<Product> GetWithName(string name)
         {
-            malzemes.Clear();
+            products.Clear();
             using (SqlConnection conn = new SqlConnection(connString))
             {
                 conn.Open();
@@ -62,17 +62,17 @@ namespace RecipeApp.Databases
                     {
                         while (reader.Read())
                         {
-                            Malzeme malzeme = new Malzeme((int)reader["MalzemeID"], (string)reader["MalzemeAdi"], (string)reader["ToplamMiktar"], (string)reader["MalzemeBirim"], (double)reader["BirimFiyat"]);
-                            malzemes.Add(malzeme);
+                            Product product = new Product((int)reader["MalzemeID"], (string)reader["MalzemeAdi"], (string)reader["ToplamMiktar"], (string)reader["MalzemeBirim"], (double)reader["BirimFiyat"]);
+                            products.Add(product);
                         }
                     }
                 }
             }
-            return malzemes;
+            return products;
         }
-        public List<Malzeme> GetWithTotal(string total)
+        public List<Product> GetWithTotal(string total)
         {
-            malzemes.Clear();
+            products.Clear();
             using (SqlConnection conn = new SqlConnection(connString))
             {
                 conn.Open();
@@ -83,17 +83,17 @@ namespace RecipeApp.Databases
                     {
                         while (reader.Read())
                         {
-                            Malzeme malzeme = new Malzeme((int)reader["MalzemeID"], (string)reader["MalzemeAdi"], (string)reader["ToplamMiktar"], (string)reader["MalzemeBirim"], (double)reader["BirimFiyat"]);
-                            malzemes.Add(malzeme);
+                            Product product = new Product((int)reader["MalzemeID"], (string)reader["MalzemeAdi"], (string)reader["ToplamMiktar"], (string)reader["MalzemeBirim"], (double)reader["BirimFiyat"]);
+                            products.Add(product);
                         }
                     }
                 }
             }
-            return malzemes;
+            return products;
         }
-        public List<Malzeme> GetWithUnit(string unit)
+        public List<Product> GetWithUnit(string unit)
         {
-            malzemes.Clear();
+            products.Clear();
             using (SqlConnection conn = new SqlConnection(connString))
             {
                 conn.Open();
@@ -104,17 +104,17 @@ namespace RecipeApp.Databases
                     {
                         while (reader.Read())
                         {
-                            Malzeme malzeme = new Malzeme((int)reader["MalzemeID"], (string)reader["MalzemeAdi"], (string)reader["ToplamMiktar"], (string)reader["MalzemeBirim"], (double)reader["BirimFiyat"]);
-                            malzemes.Add(malzeme);
+                            Product product = new Product((int)reader["MalzemeID"], (string)reader["MalzemeAdi"], (string)reader["ToplamMiktar"], (string)reader["MalzemeBirim"], (double)reader["BirimFiyat"]);
+                            products.Add(product);
                         }
                     }
                 }
             }
-            return malzemes;
+            return products;
         }
-        public List<Malzeme> GetWithCostPer(double costper)
+        public List<Product> GetWithCostPer(double costper)
         {
-            malzemes.Clear();
+            products.Clear();
             using (SqlConnection conn = new SqlConnection(connString))
             {
                 conn.Open();
@@ -125,15 +125,15 @@ namespace RecipeApp.Databases
                     {
                         while (reader.Read())
                         {
-                            Malzeme malzeme = new Malzeme((int)reader["MalzemeID"], (string)reader["MalzemeAdi"], (string)reader["ToplamMiktar"], (string)reader["MalzemeBirim"], (double)reader["BirimFiyat"]);
-                            malzemes.Add(malzeme);
+                            Product product = new Product((int)reader["MalzemeID"], (string)reader["MalzemeAdi"], (string)reader["ToplamMiktar"], (string)reader["MalzemeBirim"], (double)reader["BirimFiyat"]);
+                            products.Add(product);
                         }
                     }
                 }
             }
-            return malzemes;
+            return products;
         }
-        public bool Save(Malzeme malzeme)
+        public bool Save(Product product)
         {
             using (SqlConnection conn = new SqlConnection(connString))
             {
@@ -141,10 +141,10 @@ namespace RecipeApp.Databases
                 string command = "INSERT INTO Malzeme (MalzemeAdi,ToplamMiktar,MalzemeBirim,BirimFiyat) VALUES (@MalzemeAdi,@ToplamMiktar,@MalzemeBirim,@BirimFiyat)";
                 using (SqlCommand cmd = new SqlCommand(command, conn))
                 {
-                    cmd.Parameters.AddWithValue("@MalzemeAdi", malzeme.Name);
-                    cmd.Parameters.AddWithValue("@ToplamMiktar", malzeme.Total);
-                    cmd.Parameters.AddWithValue("@MalzemeBirim", malzeme.Unit);
-                    cmd.Parameters.AddWithValue("@BirimFiyat", Math.Round(malzeme.CostPer, 2));
+                    cmd.Parameters.AddWithValue("@MalzemeAdi", product.Name);
+                    cmd.Parameters.AddWithValue("@ToplamMiktar", product.Total);
+                    cmd.Parameters.AddWithValue("@MalzemeBirim", product.Unit);
+                    cmd.Parameters.AddWithValue("@BirimFiyat", Math.Round(product.CostPer, 2));
                     int isSucess = cmd.ExecuteNonQuery();
                     if (isSucess == 1)
                     {

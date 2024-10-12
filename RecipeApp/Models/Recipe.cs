@@ -9,11 +9,18 @@
         public string Description { get; set; }
         public Recipe(int id, string name, string category, int time, string description)
         {
-            Id = id;
-            Name = name;
-            Category = category;
-            Time = time;
-            Description = description;
+            this.Id = id;
+            this.Name = name;
+            this.Category = category;
+            this.Time = time;
+            this.Description = description;
+        }
+        public Recipe(string name, string category, int time, string description)
+        {
+            this.Name = name;
+            this.Category = category;
+            this.Time = time;
+            this.Description = description;
         }
     }
 }

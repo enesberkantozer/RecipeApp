@@ -16,10 +16,10 @@ namespace RecipeApp.Library
                 double cost = 0;
                 Recipe t = tarifs[i];
                 DbRecipeProduct dbTarifMalzeme = new DbRecipeProduct();
-                List<RecipeProduct> tarifMalzemes = dbTarifMalzeme.GetWithTarifId(t.Id);
+                List<RecipeProduct> tarifMalzemes = dbTarifMalzeme.GetWithRecipeId(t.Id);
                 for (int j = 0; j < tarifMalzemes.Count; j++)
                 {
-                    cost += tarifMalzemes[j].Malzeme.CostPer * tarifMalzemes[j].MalzemeMiktar;
+                    cost += tarifMalzemes[j].Product.CostPer * tarifMalzemes[j].ProductCost;
                 }
                 PanelTemplate panel = new PanelTemplate(t.Id, t.Name, (float)Math.Round(cost, 2), t.Time);
                 panels.Add(panel);

@@ -6,13 +6,13 @@ namespace RecipeApp.Databases
     public class DbRecipeProduct
     {
         private readonly string connString = "Data Source=ENESBERKANT-PC\\SQLEXPRESS;Initial Catalog=TarifApp;Integrated Security=True;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False";
-        List<RecipeProduct> tarifmalzemes = new List<RecipeProduct>();
-        public List<RecipeProduct> GetWithTarifId(int tarifId)
+        List<RecipeProduct> recipeProducts = new List<RecipeProduct>();
+        public List<RecipeProduct> GetWithRecipeId(int recipeId)
         {
             using (SqlConnection conn = new SqlConnection(connString))
             {
                 conn.Open();
-                string command = "SELECT MalzemeId, MalzemeMiktar FROM TarifMalzeme WHERE TarifId=" + tarifId.ToString();
+                string command = "SELECT MalzemeId, MalzemeMiktar FROM TarifMalzeme WHERE TarifId=" + recipeId.ToString();
                 using (SqlCommand cmd = new SqlCommand(command, conn))
                 {
                     using (SqlDataReader reader = cmd.ExecuteReader())
@@ -20,23 +20,23 @@ namespace RecipeApp.Databases
                         while (reader.Read())
                         {
                             DbRecipe dbTarif = new DbRecipe();
-                            Recipe tarif = dbTarif.GetWithId(tarifId).First();
+                            Recipe tarif = dbTarif.GetWithId(recipeId).First();
                             DbProduct dbMalzeme = new DbProduct();
-                            Malzeme malzeme = dbMalzeme.GetWithId((int)reader["MalzemeId"]).First();
+                            Product malzeme = dbMalzeme.GetWithId((int)reader["MalzemeId"]).First();
                             RecipeProduct tarifMalzeme = new RecipeProduct(tarif, malzeme, (double)reader["MalzemeMiktar"]);
-                            tarifmalzemes.Add(tarifMalzeme);
+                            recipeProducts.Add(tarifMalzeme);
                         }
                     }
                 }
             }
-            return tarifmalzemes;
+            return recipeProducts;
         }
-        public List<RecipeProduct> GetWithMalzemeId(int malzemeId)
+        public List<RecipeProduct> GetWithProductId(int productId)
         {
             using (SqlConnection conn = new SqlConnection(connString))
             {
                 conn.Open();
-                string command = "SELECT TarifId, MalzemeMiktar FROM TarifMalzeme WHERE MalzemeId=" + malzemeId.ToString();
+                string command = "SELECT TarifId, MalzemeMiktar FROM TarifMalzeme WHERE MalzemeId=" + productId.ToString();
                 using (SqlCommand cmd = new SqlCommand(command, conn))
                 {
                     using (SqlDataReader reader = cmd.ExecuteReader())
@@ -46,16 +46,16 @@ namespace RecipeApp.Databases
                             DbRecipe dbTarif = new DbRecipe();
                             Recipe tarif = dbTarif.GetWithId((int)reader["TarifId"]).First();
                             DbProduct dbMalzeme = new DbProduct();
-                            Malzeme malzeme = dbMalzeme.GetWithId(malzemeId).First();
+                            Product malzeme = dbMalzeme.GetWithId(productId).First();
                             RecipeProduct tarifMalzeme = new RecipeProduct(tarif, malzeme, (double)reader["MalzemeMiktar"]);
-                            tarifmalzemes.Add(tarifMalzeme);
+                            recipeProducts.Add(tarifMalzeme);
                         }
                     }
                 }
             }
-            return tarifmalzemes;
+            return recipeProducts;
         }
-        public bool Save(Recipe tarif, Malzeme malzeme, double malzemeMiktar)
+        public bool Save(Recipe tarif, Product malzeme, double malzemeMiktar)
         {
             using (SqlConnection conn = new SqlConnection(connString))
             {

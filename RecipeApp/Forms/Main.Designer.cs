@@ -1,4 +1,4 @@
-﻿namespace TarifApp
+﻿namespace RecipeApp.Forms
 {
     partial class Main
     {
