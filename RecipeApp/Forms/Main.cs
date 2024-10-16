@@ -15,6 +15,8 @@ namespace RecipeApp.Forms
 {
     public partial class Main : Form
     {
+
+        private MainLoad load = new MainLoad();
         public Main()
         {
             InitializeComponent();
@@ -29,18 +31,27 @@ namespace RecipeApp.Forms
         private void Form1_Load(object sender, EventArgs e)
         {
             searchResultPanel.Controls.Clear();
-            MainLoad load = new MainLoad();
             List<PanelTemplate> panels = load.LoadResults();
-            for (int i = 0; i < panels.Count; i++)
+            foreach (PanelTemplate panel in panels)
             {
-                searchResultPanel.Controls.Add(panels[i]);
+                searchResultPanel.Controls.Add(panel);
             }
         }
 
         private void malzemeAdd_Click(object sender, EventArgs e)
         {
-            AddProductPanel malzemeAdd = new AddProductPanel(this.Location.X,this.Location.Y,this.Size.Width,this.Size.Height);
+            AddProductPanel malzemeAdd = new AddProductPanel(this.Location.X, this.Location.Y, this.Size.Width, this.Size.Height);
             malzemeAdd.ShowDialog();
+        }
+
+        private void searchbar_TextChanged(object sender, EventArgs e)
+        {
+            searchResultPanel.Controls.Clear();
+            List<PanelTemplate> panels=load.LoadResultFromSearch(searchbar.Text);
+            foreach (PanelTemplate panel in panels)
+            {
+                searchResultPanel.Controls.Add(panel);
+            }
         }
     }
 }

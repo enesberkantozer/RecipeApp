@@ -79,6 +79,7 @@
             searchbar.PlaceholderText = "Arama Yapınız";
             searchbar.Size = new Size(790, 32);
             searchbar.TabIndex = 3;
+            searchbar.TextChanged += searchbar_TextChanged;
             // 
             // detailedSearch
             // 

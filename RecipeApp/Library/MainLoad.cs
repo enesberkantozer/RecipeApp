@@ -6,20 +6,42 @@ namespace RecipeApp.Library
 {
     public class MainLoad
     {
+
+        private List<PanelTemplate> panels = new List<PanelTemplate>();
+        private DbRecipe dbRecipe = new DbRecipe();
+        private DbRecipeProduct dbRecipeProduct = new DbRecipeProduct();
+        private double cost = 0;
         public List<PanelTemplate> LoadResults()
         {
-            List<PanelTemplate> panels = new List<PanelTemplate>();
-            DbRecipe dbTarif = new DbRecipe();
-            List<Recipe> tarifs = dbTarif.GetAll();
-            for (int i = 0; i < tarifs.Count; i++)
+            panels.Clear();
+            List<Recipe> recipes = dbRecipe.GetAll();
+            for (int i = 0; i < recipes.Count; i++)
             {
-                double cost = 0;
-                Recipe t = tarifs[i];
-                DbRecipeProduct dbTarifMalzeme = new DbRecipeProduct();
-                List<RecipeProduct> tarifMalzemes = dbTarifMalzeme.GetWithRecipeId(t.Id);
-                for (int j = 0; j < tarifMalzemes.Count; j++)
+                cost = 0;
+                Recipe t = recipes[i];
+                List<RecipeProduct> recipeProducts = dbRecipeProduct.GetWithRecipeId(t.Id);
+                for (int j = 0; j < recipeProducts.Count; j++)
                 {
-                    cost += tarifMalzemes[j].Product.CostPer * tarifMalzemes[j].ProductCost;
+                    cost += recipeProducts[j].Product.CostPer * recipeProducts[j].ProductCost;
+                }
+                PanelTemplate panel = new PanelTemplate(t.Id, t.Name, (float)Math.Round(cost, 2), t.Time);
+                panels.Add(panel);
+            }
+            return panels;
+        }
+
+        public List<PanelTemplate> LoadResultFromSearch(string search)
+        {
+            panels.Clear();
+            List<Recipe> recipes = dbRecipe.SearchRecipe(search);
+            for (int i = 0; i < recipes.Count; i++)
+            {
+                cost = 0;
+                Recipe t = recipes[i];
+                List<RecipeProduct> recipeProducts=dbRecipeProduct.GetWithRecipeId(t.Id);
+                for(int j = 0;j < recipeProducts.Count; j++)
+                {
+                    cost += recipeProducts[j].Product.CostPer * recipeProducts[j].ProductCost;
                 }
                 PanelTemplate panel = new PanelTemplate(t.Id, t.Name, (float)Math.Round(cost, 2), t.Time);
                 panels.Add(panel);

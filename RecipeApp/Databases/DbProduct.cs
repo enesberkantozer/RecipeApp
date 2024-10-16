@@ -28,26 +28,27 @@ namespace RecipeApp.Databases
             }
             return products;
         }
-        public List<Product> GetWithId(int id)
+        public Product GetWithId(int id)
         {
             products.Clear();
             using (SqlConnection conn = new SqlConnection(connString))
             {
                 conn.Open();
-                string command = "SELECT * FROM Malzeme Where MalzemeID=" + id.ToString();
+                string command = "SELECT * FROM Malzeme Where MalzemeID=@id";
                 using (SqlCommand cmd = new SqlCommand(command, conn))
                 {
+                    cmd.Parameters.AddWithValue("@id", id);
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
                         {
                             Product product = new Product((int)reader["MalzemeID"], (string)reader["MalzemeAdi"], (string)reader["ToplamMiktar"], (string)reader["MalzemeBirim"], (double)reader["BirimFiyat"]);
-                            products.Add(product);
+                            return product;
                         }
                     }
                 }
             }
-            return products;
+            return null;
         }
         public List<Product> GetWithName(string name)
         {
@@ -55,9 +56,10 @@ namespace RecipeApp.Databases
             using (SqlConnection conn = new SqlConnection(connString))
             {
                 conn.Open();
-                string command = "SELECT * FROM Malzeme Where MalzemeAdi=" + name;
+                string command = "SELECT * FROM Malzeme Where MalzemeAdi=@name";
                 using (SqlCommand cmd = new SqlCommand(command, conn))
                 {
+                    cmd.Parameters.AddWithValue("@name",name);
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
@@ -76,9 +78,10 @@ namespace RecipeApp.Databases
             using (SqlConnection conn = new SqlConnection(connString))
             {
                 conn.Open();
-                string command = "SELECT * FROM Malzeme Where ToplamMiktar=" + total;
+                string command = "SELECT * FROM Malzeme Where ToplamMiktar=@total";
                 using (SqlCommand cmd = new SqlCommand(command, conn))
                 {
+                    cmd.Parameters.AddWithValue("@total", total);
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
@@ -97,9 +100,10 @@ namespace RecipeApp.Databases
             using (SqlConnection conn = new SqlConnection(connString))
             {
                 conn.Open();
-                string command = "SELECT * FROM Malzeme Where MalzemeBirim=" + unit;
+                string command = "SELECT * FROM Malzeme Where MalzemeBirim=@unit";
                 using (SqlCommand cmd = new SqlCommand(command, conn))
                 {
+                    cmd.Parameters.AddWithValue("@unit",unit);
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
@@ -118,9 +122,10 @@ namespace RecipeApp.Databases
             using (SqlConnection conn = new SqlConnection(connString))
             {
                 conn.Open();
-                string command = "SELECT * FROM Malzeme Where BirimFiyat=" + costper.ToString();
+                string command = "SELECT * FROM Malzeme Where BirimFiyat=@costper";
                 using (SqlCommand cmd = new SqlCommand(command, conn))
                 {
+                    cmd.Parameters.AddWithValue("@costper",costper);
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())

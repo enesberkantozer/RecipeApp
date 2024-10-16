@@ -9,20 +9,22 @@ namespace RecipeApp.Databases
         List<RecipeProduct> recipeProducts = new List<RecipeProduct>();
         public List<RecipeProduct> GetWithRecipeId(int recipeId)
         {
+            recipeProducts.Clear();
             using (SqlConnection conn = new SqlConnection(connString))
             {
                 conn.Open();
-                string command = "SELECT MalzemeId, MalzemeMiktar FROM TarifMalzeme WHERE TarifId=" + recipeId.ToString();
+                string command = "SELECT MalzemeId, MalzemeMiktar FROM TarifMalzeme WHERE TarifId=@id";
                 using (SqlCommand cmd = new SqlCommand(command, conn))
                 {
+                    cmd.Parameters.AddWithValue("@id", recipeId);
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
                         {
                             DbRecipe dbTarif = new DbRecipe();
-                            Recipe tarif = dbTarif.GetWithId(recipeId).First();
+                            Recipe tarif = dbTarif.GetWithId(recipeId);
                             DbProduct dbMalzeme = new DbProduct();
-                            Product malzeme = dbMalzeme.GetWithId((int)reader["MalzemeId"]).First();
+                            Product malzeme = dbMalzeme.GetWithId((int)reader["MalzemeId"]);
                             RecipeProduct tarifMalzeme = new RecipeProduct(tarif, malzeme, (double)reader["MalzemeMiktar"]);
                             recipeProducts.Add(tarifMalzeme);
                         }
@@ -33,20 +35,22 @@ namespace RecipeApp.Databases
         }
         public List<RecipeProduct> GetWithProductId(int productId)
         {
+            recipeProducts.Clear();
             using (SqlConnection conn = new SqlConnection(connString))
             {
                 conn.Open();
-                string command = "SELECT TarifId, MalzemeMiktar FROM TarifMalzeme WHERE MalzemeId=" + productId.ToString();
+                string command = "SELECT TarifId, MalzemeMiktar FROM TarifMalzeme WHERE MalzemeId=@id";
                 using (SqlCommand cmd = new SqlCommand(command, conn))
                 {
+                    cmd.Parameters.AddWithValue("@id", productId);
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
                         {
                             DbRecipe dbTarif = new DbRecipe();
-                            Recipe tarif = dbTarif.GetWithId((int)reader["TarifId"]).First();
+                            Recipe tarif = dbTarif.GetWithId((int)reader["TarifId"]);
                             DbProduct dbMalzeme = new DbProduct();
-                            Product malzeme = dbMalzeme.GetWithId(productId).First();
+                            Product malzeme = dbMalzeme.GetWithId(productId);
                             RecipeProduct tarifMalzeme = new RecipeProduct(tarif, malzeme, (double)reader["MalzemeMiktar"]);
                             recipeProducts.Add(tarifMalzeme);
                         }

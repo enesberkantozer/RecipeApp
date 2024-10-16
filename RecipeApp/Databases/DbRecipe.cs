@@ -28,26 +28,27 @@ namespace RecipeApp.Databases
             }
             return recipes;
         }
-        public List<Recipe> GetWithId(int id)
+        public Recipe GetWithId(int id)
         {
             recipes.Clear();
             using (SqlConnection conn = new SqlConnection(connString))
             {
                 conn.Open();
-                string command = "SELECT * FROM Tarif Where TarifID=" + id.ToString();
+                string command = "SELECT * FROM Tarif Where TarifID=@id";
                 using (SqlCommand cmd = new SqlCommand(command, conn))
                 {
+                    cmd.Parameters.AddWithValue("@id", id);
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
                         {
                             Recipe recipe = new Recipe((int)reader["TarifID"], (string)reader["TarifAdi"], (string)reader["Kategori"], (int)reader["HazirlanmaSuresi"], (string)reader["Talimatlar"]);
-                            recipes.Add(recipe);
+                            return recipe;
                         }
                     }
                 }
             }
-            return recipes;
+            return null;
         }
         public List<Recipe> GetWithName(string name)
         {
@@ -55,9 +56,10 @@ namespace RecipeApp.Databases
             using (SqlConnection conn = new SqlConnection(connString))
             {
                 conn.Open();
-                string command = "SELECT * FROM Tarif Where TarifAdi=" + name;
+                string command = "SELECT * FROM Tarif Where TarifAdi=@name";
                 using (SqlCommand cmd = new SqlCommand(command, conn))
                 {
+                    cmd.Parameters.AddWithValue("@name", name);
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
@@ -76,9 +78,10 @@ namespace RecipeApp.Databases
             using (SqlConnection conn = new SqlConnection(connString))
             {
                 conn.Open();
-                string command = "SELECT * FROM Tarif Where Kategori=" + category;
+                string command = "SELECT * FROM Tarif Where Kategori=@category";
                 using (SqlCommand cmd = new SqlCommand(command, conn))
                 {
+                    cmd.Parameters.AddWithValue("@category", category);
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
@@ -97,9 +100,10 @@ namespace RecipeApp.Databases
             using (SqlConnection conn = new SqlConnection(connString))
             {
                 conn.Open();
-                string command = "SELECT * FROM Tarif Where HazirlanmaSuresi=" + time.ToString();
+                string command = "SELECT * FROM Tarif Where HazirlanmaSuresi=@time";
                 using (SqlCommand cmd = new SqlCommand(command, conn))
                 {
+                    cmd.Parameters.AddWithValue("@time", time);
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
@@ -118,9 +122,10 @@ namespace RecipeApp.Databases
             using (SqlConnection conn = new SqlConnection(connString))
             {
                 conn.Open();
-                string command = "SELECT * FROM Tarif Where Talimatlar=" + description;
+                string command = "SELECT * FROM Tarif Where Talimatlar=@desc";
                 using (SqlCommand cmd = new SqlCommand(command, conn))
                 {
+                    cmd.Parameters.AddWithValue("@desc", description);
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
@@ -156,6 +161,29 @@ namespace RecipeApp.Databases
                     }
                 }
             }
+        }
+
+        public List<Recipe> SearchRecipe(string search)
+        {
+            recipes.Clear();
+            using(SqlConnection conn = new SqlConnection(connString))
+            {
+                conn.Open();
+                string command = "SELECT * FROM Tarif WHERE TarifAdi LIKE @search";
+                using(SqlCommand cmd = new SqlCommand(command,conn))
+                {
+                    cmd.Parameters.AddWithValue("@search","%"+search+"%");
+                    using(SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Recipe recipe=new Recipe((int)reader["TarifID"], (string)reader["TarifAdi"], (string)reader["Kategori"], (int)reader["HazirlanmaSuresi"], (string)reader["Talimatlar"]);
+                            recipes.Add(recipe);
+                        }
+                    }
+                }
+            }
+            return recipes;
         }
     }
 }

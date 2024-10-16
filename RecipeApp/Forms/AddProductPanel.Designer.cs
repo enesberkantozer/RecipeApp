@@ -81,7 +81,7 @@ namespace RecipeApp.Forms
             comboBoxProductUnit.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxProductUnit.Font = new Font("Segoe UI", 12F);
             comboBoxProductUnit.FormattingEnabled = true;
-            comboBoxProductUnit.Items.AddRange(new object[] { "Kg", "Litre", "Gr", "Mg" });
+            comboBoxProductUnit.Items.AddRange(new object[] { "kg", "litre", "mg", "ml", "gram", "bardak", "çay bardağı", "kaşık", "tatlı kaşığı" });
             comboBoxProductUnit.Location = new Point(386, 111);
             comboBoxProductUnit.Name = "comboBoxProductUnit";
             comboBoxProductUnit.Size = new Size(89, 36);

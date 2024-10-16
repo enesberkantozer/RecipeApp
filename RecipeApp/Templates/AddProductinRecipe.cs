@@ -1,46 +1,38 @@
-﻿using RecipeApp.Models;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using RecipeApp.Forms;
+using RecipeApp.Models;
+using static System.Windows.Forms.ComboBox;
 
 namespace RecipeApp.Templates
 {
     public partial class AddProductinRecipe : UserControl
     {
-        private List<Product> products = new List<Product>();
-        public AddProductinRecipe(List<Product> productList)
+        private Product Product { get; set; }
+        public AddProductinRecipe(Product product)
         {
             InitializeComponent();
-            foreach (Product p in productList)
-            {
-                comboBox1.Items.Add(p.Name);
-            }
-        }
-
-        private void AddProductinRecipe_Load(object sender, EventArgs e)
-        {
+            this.Product = product;
+            labelUnit.Text = product.Unit;
+            labelName.Text = product.Name;
+            ToolTip toolTip = new ToolTip();
+            toolTip.SetToolTip(labelName, labelName.Text);
             numericUpDown1.DecimalPlaces = 2;
             numericUpDown1.Increment = 0.01M;
-            numericUpDown1.Hide();
-        }
-
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            /*products.Remove();
-            numericUpDown1.Show();
-            this.Parent.Controls.Add(new AddProductinRecipe());*/
+            numericUpDown1.Minimum = 0.01M;
+            numericUpDown1.Maximum = decimal.Parse(product.Total);
+            numericUpDown1.Tag = product.Id;
+            button1.Name = product.Id.ToString();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
+            AddRecipePanel.addedProducts.Remove(Product);
+            AddRecipePanel.products.Add(Product);
             this.Parent.Controls.Remove(this);
-            this.Dispose();
+        }
+
+        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
+        {
+            AddRecipePanel.addedProducts[Product] = Convert.ToSingle(numericUpDown1.Value);
         }
     }
 }

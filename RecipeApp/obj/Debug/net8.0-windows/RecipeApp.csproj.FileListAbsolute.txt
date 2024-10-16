@@ -108,3 +108,4 @@ C:\Users\enesb\OneDrive\Masaüstü\YazLab\1\RecipeApp\RecipeApp\obj\Debug\net8.0
 C:\Users\enesb\OneDrive\Masaüstü\YazLab\1\RecipeApp\RecipeApp\obj\Debug\net8.0-windows\ref\RecipeApp.dll
 C:\Users\enesb\OneDrive\Masaüstü\YazLab\1\RecipeApp\RecipeApp\obj\Debug\net8.0-windows\RecipeApp.Forms.AddRecipePanel.resources
 C:\Users\enesb\OneDrive\Masaüstü\YazLab\1\RecipeApp\RecipeApp\obj\Debug\net8.0-windows\RecipeApp.Templates.AddProductinRecipe.resources
+C:\Users\enesb\OneDrive\Masaüstü\YazLab\1\RecipeApp\RecipeApp\obj\Debug\net8.0-windows\RecipeApp.Properties.Resources.resources
