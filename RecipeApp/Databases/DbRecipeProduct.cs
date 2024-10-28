@@ -14,7 +14,7 @@ namespace RecipeApp.Databases
             using (SqlConnection conn = new SqlConnection(connString))
             {
                 conn.Open();
-                string command = "SELECT MalzemeId, MalzemeMiktar FROM TarifMalzeme WHERE TarifId=@id";
+                string command = "SELECT MalzemeID, MalzemeMiktar FROM TarifMalzeme WHERE TarifID=@id";
                 using (SqlCommand cmd = new SqlCommand(command, conn))
                 {
                     cmd.Parameters.AddWithValue("@id", recipeId);
@@ -25,7 +25,7 @@ namespace RecipeApp.Databases
                             DbRecipe dbTarif = new DbRecipe();
                             Recipe tarif = dbTarif.GetWithId(recipeId);
                             DbProduct dbMalzeme = new DbProduct();
-                            Product malzeme = dbMalzeme.GetWithId((int)reader["MalzemeId"]);
+                            Product malzeme = dbMalzeme.GetWithId((int)reader["MalzemeID"]);
                             RecipeProduct tarifMalzeme = new RecipeProduct(tarif, malzeme, (double)reader["MalzemeMiktar"]);
                             recipeProducts.Add(tarifMalzeme);
                         }
@@ -40,7 +40,7 @@ namespace RecipeApp.Databases
             using (SqlConnection conn = new SqlConnection(connString))
             {
                 conn.Open();
-                string command = "SELECT TarifId, MalzemeMiktar FROM TarifMalzeme WHERE MalzemeId=@id";
+                string command = "SELECT TarifID, MalzemeMiktar FROM TarifMalzeme WHERE MalzemeID=@id";
                 using (SqlCommand cmd = new SqlCommand(command, conn))
                 {
                     cmd.Parameters.AddWithValue("@id", productId);
@@ -49,7 +49,7 @@ namespace RecipeApp.Databases
                         while (reader.Read())
                         {
                             DbRecipe dbTarif = new DbRecipe();
-                            Recipe tarif = dbTarif.GetWithId((int)reader["TarifId"]);
+                            Recipe tarif = dbTarif.GetWithId((int)reader["TarifID"]);
                             DbProduct dbMalzeme = new DbProduct();
                             Product malzeme = dbMalzeme.GetWithId(productId);
                             RecipeProduct tarifMalzeme = new RecipeProduct(tarif, malzeme, (double)reader["MalzemeMiktar"]);
@@ -65,7 +65,7 @@ namespace RecipeApp.Databases
             using (SqlConnection conn = new SqlConnection(connString))
             {
                 conn.Open();
-                string command = "INSERT INTO TarifMalzeme (TarifId,MalzemeId,MalzemeMiktar) VALUES (@TarifId,@MalzemeId,@MalzemeMiktar)";
+                string command = "INSERT INTO TarifMalzeme (TarifID,MalzemeID,MalzemeMiktar) VALUES (@TarifId,@MalzemeId,@MalzemeMiktar)";
                 using (SqlCommand cmd = new SqlCommand(command, conn))
                 {
                     cmd.Parameters.AddWithValue("@TarifId", tarif.Id);

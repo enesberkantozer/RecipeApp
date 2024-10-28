@@ -65,8 +65,8 @@ namespace RecipeApp.Library
             List<RecipeProduct> recipeProducts=dbRecipeProduct.GetWithRecipeId(recipe.Id);
             for(int i = 0; i < recipeProducts.Count; i++)
             {
-                double data= products.Where(p => p.Key.Id == recipeProducts[i].Product.Id).Select(p => p.Value).First();
-                if (data!=null)
+                double data= products.Where(p => p.Key.Id == recipeProducts[i].Product.Id).Select(p => p.Value).FirstOrDefault();
+                if (data!=0)
                 {
                     missingCost += (recipeProducts[i].ProductCost - data) * recipeProducts[i].Product.CostPer;
                 }
@@ -128,10 +128,12 @@ namespace RecipeApp.Library
                 {
                     connection.Open();
                     string createDbCommandText = $@"
-                    CREATE DATABASE [Database]
-                    ON (NAME = N'Database', FILENAME = '{dbPath}')
-                    LOG ON (NAME = N'Database_log', FILENAME = '{Path.Combine(dbPathDir, "Database.ldf")}')
-                    ";
+                    IF DB_ID('Database') IS NULL
+                    BEGIN
+                        CREATE DATABASE [Database]
+                        ON (NAME = N'Database', FILENAME = '{dbPath}')
+                        LOG ON (NAME = N'Database_log', FILENAME = '{Path.Combine(dbPathDir, "Database.ldf")}')
+                    END";
                     using(SqlCommand cmd = new SqlCommand(createDbCommandText, connection))
                     {
                         cmd.ExecuteNonQuery();

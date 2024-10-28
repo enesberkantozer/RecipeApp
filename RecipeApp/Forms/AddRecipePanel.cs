@@ -201,7 +201,6 @@ namespace RecipeApp.Forms
                     int savedProductCount = 0;
                     foreach (Product p in addedProducts.Keys)
                     {
-
                         bool isSavedRecipeProduct = dbRecipeProduct.Save(recipe, p, addedProducts[p]);
                         if (isSavedRecipeProduct)
                         {
@@ -217,6 +216,7 @@ namespace RecipeApp.Forms
                         {
                             Directory.CreateDirectory(saveDir);
                         }
+                        savedPhotoCount=Directory.GetFiles(saveDir).Length;
                         for (int i = 0; i < imgPaths.Count; i++)
                         {
                             string destFile = Path.Combine(saveDir, (i.ToString() + Path.GetExtension(imgPaths[i])));

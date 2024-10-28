@@ -38,6 +38,8 @@ namespace RecipeApp.Forms
                 };
                 categoryFlowLayoutPanel.Controls.Add(cbox);
             });
+            minCost.Maximum=decimal.MaxValue;
+            maxCost.Maximum = decimal.MaxValue;
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -82,10 +84,8 @@ namespace RecipeApp.Forms
         {
             Main.srchProducts.Clear();
             Main.srchCategory.Clear();
-            if (checkBox1.Checked)
-            {
-                Main.srchName = textBox1.Text;
-            }
+
+            Main.srchName = textBox1.Text;
             if (checkBox2.Checked)
             {
                 Main.srchMinCost = Convert.ToDouble(minCost.Value);
