@@ -87,6 +87,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
             }
         }
     }
@@ -207,7 +215,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Recipe Book"
         "ProductCode" = "8:{6FE636E5-2E2B-47D3-BCAD-6ECC0E429374}"
-        "PackageCode" = "8:{116652EB-A1E9-42D3-9552-65115E990728}"
+        "PackageCode" = "8:{5FED03D6-C0BD-427A-B9BF-0CDE94346B24}"
         "UpgradeCode" = "8:{405AAE52-DF8F-4390-9A2B-7369EC5ACD49}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"

@@ -4,6 +4,7 @@ using RecipeApp.Databases;
 using RecipeApp.Forms;
 using RecipeApp.Models;
 using RecipeApp.Templates;
+using System.Xml.Linq;
 
 namespace RecipeApp.Library
 {
@@ -121,6 +122,20 @@ namespace RecipeApp.Library
             string dbPath = Path.Combine(dbPathDir, "Database.mdf");
             string connectionString = $@"Data Source=(LocalDB)\MSSQLLocalDB;Integrated Security=True;";
 
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                string detachString = @"
+                    IF DB_ID('Database') IS NOT NULL
+                    BEGIN
+                        ALTER DATABASE [Database] SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+                        EXEC sp_detach_db 'Database';
+                    END";
+                using (SqlCommand command = new SqlCommand(detachString, connection))
+                {
+                    command.ExecuteNonQuery();
+                }
+            }
             if (!File.Exists(dbPath))
             {
                 Directory.CreateDirectory(Path.Combine(dbPathDir));
