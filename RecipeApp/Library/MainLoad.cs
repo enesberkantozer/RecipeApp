@@ -1,4 +1,7 @@
-﻿using RecipeApp.Databases;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.IdentityModel.Tokens;
+using RecipeApp.Databases;
+using RecipeApp.Forms;
 using RecipeApp.Models;
 using RecipeApp.Templates;
 
@@ -7,46 +10,181 @@ namespace RecipeApp.Library
     public class MainLoad
     {
 
-        private List<PanelTemplate> panels = new List<PanelTemplate>();
+        private List<PanelTemp> panels = new List<PanelTemp>();
         private DbRecipe dbRecipe = new DbRecipe();
         private DbRecipeProduct dbRecipeProduct = new DbRecipeProduct();
-        private double cost = 0;
-        public List<PanelTemplate> LoadResults()
+        private DbProduct dbProduct = new DbProduct();
+        public Dictionary<RecipeProduct, double> missingProducts = new Dictionary<RecipeProduct, double>();
+        public List<PanelTemp> LoadResults(string? name = null, List<string>? category = null, int? minTime = 0, int? maxTime = int.MaxValue,
+            double? minCost = 0, double? maxCost = double.MaxValue, Dictionary<Product,double>? products = null)
         {
+            if (products.IsNullOrEmpty())
+                products = new Dictionary<Product, double>();
             panels.Clear();
-            List<Recipe> recipes = dbRecipe.GetAll();
+            List<Recipe> recipes = dbRecipe.SearchRecipe(
+                name: name,
+                category: category,
+                minTime: minTime,
+                maxTime: maxTime,
+                minCost: minCost,
+                maxCost: maxCost,
+                products: products.Keys.ToList()
+                );
             for (int i = 0; i < recipes.Count; i++)
             {
-                cost = 0;
                 Recipe t = recipes[i];
-                List<RecipeProduct> recipeProducts = dbRecipeProduct.GetWithRecipeId(t.Id);
-                for (int j = 0; j < recipeProducts.Count; j++)
-                {
-                    cost += recipeProducts[j].Product.CostPer * recipeProducts[j].ProductCost;
-                }
-                PanelTemplate panel = new PanelTemplate(t.Id, t.Name, (float)Math.Round(cost, 2), t.Time);
+                PanelTemp panel = new PanelTemp(t,products);
                 panels.Add(panel);
             }
+            panels= panels.OrderByDescending(x => x.Percent).ToList();
             return panels;
         }
 
-        public List<PanelTemplate> LoadResultFromSearch(string search)
+        public double GetCost(Recipe recipe)
         {
-            panels.Clear();
-            List<Recipe> recipes = dbRecipe.SearchRecipe(search);
-            for (int i = 0; i < recipes.Count; i++)
+            double cost = 0;
+            List<RecipeProduct> recipeProducts = dbRecipeProduct.GetWithRecipeId(recipe.Id);
+            for (int i = 0; i < recipeProducts.Count; i++)
             {
-                cost = 0;
-                Recipe t = recipes[i];
-                List<RecipeProduct> recipeProducts=dbRecipeProduct.GetWithRecipeId(t.Id);
-                for(int j = 0;j < recipeProducts.Count; j++)
-                {
-                    cost += recipeProducts[j].Product.CostPer * recipeProducts[j].ProductCost;
-                }
-                PanelTemplate panel = new PanelTemplate(t.Id, t.Name, (float)Math.Round(cost, 2), t.Time);
-                panels.Add(panel);
+                cost += recipeProducts[i].Product.CostPer * recipeProducts[i].ProductCost;
             }
-            return panels;
+            return Math.Round(cost, 2);
+        }
+        public double GetMissingCost(Recipe recipe, Dictionary<Product,double>? products)
+        {
+            if (products.IsNullOrEmpty())
+            {
+                products = new Dictionary<Product, double>();
+                foreach (Product p in dbProduct.GetAll())
+                {
+                    double.TryParse(p.Total, out double d);
+                    products.Add(p, d);
+                }
+            }
+            double missingCost = 0;
+            List<RecipeProduct> recipeProducts=dbRecipeProduct.GetWithRecipeId(recipe.Id);
+            for(int i = 0; i < recipeProducts.Count; i++)
+            {
+                double data= products.Where(p => p.Key.Id == recipeProducts[i].Product.Id).Select(p => p.Value).First();
+                if (data!=null)
+                {
+                    missingCost += (recipeProducts[i].ProductCost - data) * recipeProducts[i].Product.CostPer;
+                }
+            }
+            return Math.Round(missingCost, 2);
+        }
+        public double GetPercent(Recipe recipe, Dictionary<Product, double>? products)
+        {
+            missingProducts = new Dictionary<RecipeProduct, double>();
+            if (products.IsNullOrEmpty())
+            {
+                products = new Dictionary<Product, double>();
+                foreach (Product p in dbProduct.GetAll())
+                {
+                    double.TryParse(p.Total, out double d);
+                    products.Add(p, d);
+                }
+            }
+            double containsProductinRecipe = 0, totalProductinRecipe = 0;
+            foreach (RecipeProduct rp in dbRecipeProduct.GetWithRecipeId(recipe.Id))
+            {
+                missingProducts.Add(rp, rp.ProductCost);
+                totalProductinRecipe += rp.ProductCost;
+                foreach (Product p in products.Keys.ToList())
+                {
+                    if (rp.Product.Equals(p))
+                    {
+                        if (rp.ProductCost <= products[p])
+                        {
+                            containsProductinRecipe += rp.ProductCost;
+                            missingProducts.Remove(rp);
+                        }
+                        else
+                        {
+                            containsProductinRecipe += products[p];
+                            missingProducts[rp] -= products[p];
+                        }
+                    }
+                }
+            }
+            if (containsProductinRecipe > 0 && totalProductinRecipe > 0)
+            {
+                double result = (containsProductinRecipe / totalProductinRecipe) * 100;
+                return Math.Round(result, 2);
+            }
+            return 0;
+        }
+
+        public static void InıtDatabase()
+        {
+            string dbPathDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "UserData", "Database");
+            string dbPath = Path.Combine(dbPathDir, "Database.mdf");
+            string connectionString = $@"Data Source=(LocalDB)\MSSQLLocalDB;Integrated Security=True;";
+
+            if (!File.Exists(dbPath))
+            {
+                Directory.CreateDirectory(Path.Combine(dbPathDir));
+                using(SqlConnection connection=new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string createDbCommandText = $@"
+                    CREATE DATABASE [Database]
+                    ON (NAME = N'Database', FILENAME = '{dbPath}')
+                    LOG ON (NAME = N'Database_log', FILENAME = '{Path.Combine(dbPathDir, "Database.ldf")}')
+                    ";
+                    using(SqlCommand cmd = new SqlCommand(createDbCommandText, connection))
+                    {
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                string createTables = @"
+                IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Malzeme' AND xtype='U')
+                CREATE TABLE Malzeme (
+                    MalzemeID INT PRIMARY KEY IDENTITY,
+                    MalzemeAdi VARCHAR(100) NOT NULL UNIQUE,
+                    ToplamMiktar VARCHAR(100) NOT NULL,
+                    MalzemeBirim VARCHAR(20) NOT NULL,
+                    BirimFiyat FLOAT NOT NULL
+                );
+
+                IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Tarif' AND xtype='U')
+                CREATE TABLE Tarif (
+                    TarifID INT PRIMARY KEY IDENTITY,
+                    TarifAdi VARCHAR(100) NOT NULL,
+                    Kategori VARCHAR(50) NOT NULL,
+                    HazirlanmaSuresi INT NOT NULL,
+                    Talimatlar TEXT NOT NULL
+                );
+
+                IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='TarifMalzeme' AND xtype='U')
+                CREATE TABLE TarifMalzeme (
+                    TarifID INT,
+                    MalzemeID INT,
+                    MalzemeMiktar FLOAT NOT NULL,
+                    PRIMARY KEY (TarifID, MalzemeID),
+                    FOREIGN KEY (TarifID) REFERENCES Tarif(TarifID),
+                    FOREIGN KEY (MalzemeID) REFERENCES Malzeme(MalzemeID)
+                );
+
+                IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Foto' AND xtype='U')
+                CREATE TABLE Foto (
+                    TarifID INT,
+                    Foto TEXT
+                );
+            ";
+                using (SqlConnection connection1=new SqlConnection(Main.connString))
+                {
+                    connection1.Open();
+                    using (SqlCommand cmd1 = new SqlCommand(createTables, connection1))
+                    {
+                        cmd1.ExecuteNonQuery();
+                    }
+                }
+            }
+            else
+            {
+                return;
+            }
         }
     }
 }

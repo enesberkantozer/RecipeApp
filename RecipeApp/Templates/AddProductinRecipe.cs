@@ -1,13 +1,12 @@
 ﻿using RecipeApp.Forms;
 using RecipeApp.Models;
-using static System.Windows.Forms.ComboBox;
 
 namespace RecipeApp.Templates
 {
     public partial class AddProductinRecipe : UserControl
     {
-        private Product Product { get; set; }
-        public AddProductinRecipe(Product product)
+        public Product Product { get; set; }
+        public AddProductinRecipe(Product product, double value)
         {
             InitializeComponent();
             this.Product = product;
@@ -18,21 +17,31 @@ namespace RecipeApp.Templates
             numericUpDown1.DecimalPlaces = 2;
             numericUpDown1.Increment = 0.01M;
             numericUpDown1.Minimum = 0.01M;
-            numericUpDown1.Maximum = decimal.Parse(product.Total);
+            numericUpDown1.Maximum = decimal.MaxValue;
             numericUpDown1.Tag = product.Id;
+            numericUpDown1.Value = (decimal)value;
             button1.Name = product.Id.ToString();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            AddRecipePanel.addedProducts.Remove(Product);
-            AddRecipePanel.products.Add(Product);
+            
+            if (this.Parent.Tag.Equals("searchFlowProduct"))
+            {
+                Main.srchAllProducts.Add(Product);
+            }
+            else
+            {
+                AddRecipePanel.addedProducts.Remove(Product);
+                AddRecipePanel.products.Add(Product);
+            }
             this.Parent.Controls.Remove(this);
         }
-
-        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
+        
+        public double GetNumericValue()
         {
-            AddRecipePanel.addedProducts[Product] = Convert.ToSingle(numericUpDown1.Value);
+            double value = Convert.ToDouble(numericUpDown1.Value);
+            return value;
         }
     }
 }

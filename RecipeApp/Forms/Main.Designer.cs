@@ -28,9 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             tarifAdd = new Button();
             topPanel = new Panel();
-            button1 = new Button();
+            comboBoxSort = new ComboBox();
             searchbar = new TextBox();
             detailedSearch = new Button();
             malzemeAdd = new Button();
@@ -50,7 +51,8 @@
             // 
             // topPanel
             // 
-            topPanel.Controls.Add(button1);
+            topPanel.BackColor = SystemColors.Control;
+            topPanel.Controls.Add(comboBoxSort);
             topPanel.Controls.Add(searchbar);
             topPanel.Controls.Add(detailedSearch);
             topPanel.Controls.Add(malzemeAdd);
@@ -58,17 +60,20 @@
             topPanel.Dock = DockStyle.Top;
             topPanel.Location = new Point(0, 0);
             topPanel.Name = "topPanel";
-            topPanel.Size = new Size(1332, 95);
+            topPanel.Size = new Size(1509, 95);
             topPanel.TabIndex = 1;
             // 
-            // button1
+            // comboBoxSort
             // 
-            button1.Location = new Point(1237, 21);
-            button1.Name = "button1";
-            button1.Size = new Size(83, 51);
-            button1.TabIndex = 4;
-            button1.Text = "Sırala";
-            button1.UseVisualStyleBackColor = true;
+            comboBoxSort.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboBoxSort.Font = new Font("Segoe UI", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 162);
+            comboBoxSort.FormattingEnabled = true;
+            comboBoxSort.Items.AddRange(new object[] { "Önerilen", "Fiyata Göre Artan", "Fiyata Göre Azalan", "Süreye Göre Artan", "Süreye Göre Azalan" });
+            comboBoxSort.Location = new Point(1338, 28);
+            comboBoxSort.Name = "comboBoxSort";
+            comboBoxSort.Size = new Size(159, 33);
+            comboBoxSort.TabIndex = 4;
+            comboBoxSort.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
             // 
             // searchbar
             // 
@@ -77,18 +82,19 @@
             searchbar.Location = new Point(298, 29);
             searchbar.Name = "searchbar";
             searchbar.PlaceholderText = "Arama Yapınız";
-            searchbar.Size = new Size(790, 32);
+            searchbar.Size = new Size(891, 32);
             searchbar.TabIndex = 3;
             searchbar.TextChanged += searchbar_TextChanged;
             // 
             // detailedSearch
             // 
-            detailedSearch.Location = new Point(1094, 21);
+            detailedSearch.Location = new Point(1195, 20);
             detailedSearch.Name = "detailedSearch";
             detailedSearch.Size = new Size(137, 51);
             detailedSearch.TabIndex = 2;
             detailedSearch.Text = "Detaylı Arama";
             detailedSearch.UseVisualStyleBackColor = true;
+            detailedSearch.Click += detailedSearch_Click;
             // 
             // malzemeAdd
             // 
@@ -103,22 +109,25 @@
             // searchResultPanel
             // 
             searchResultPanel.AutoScroll = true;
+            searchResultPanel.BackColor = SystemColors.Control;
+            searchResultPanel.BorderStyle = BorderStyle.Fixed3D;
             searchResultPanel.Dock = DockStyle.Fill;
             searchResultPanel.Location = new Point(0, 95);
             searchResultPanel.Name = "searchResultPanel";
-            searchResultPanel.Size = new Size(1332, 608);
+            searchResultPanel.Size = new Size(1509, 678);
             searchResultPanel.TabIndex = 2;
             // 
             // Main
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1332, 703);
+            ClientSize = new Size(1509, 773);
             Controls.Add(searchResultPanel);
             Controls.Add(topPanel);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "Main";
             Text = "Tarif Defterim";
-            Load += Form1_Load;
+            Activated += Form1_Activated;
             topPanel.ResumeLayout(false);
             topPanel.PerformLayout();
             ResumeLayout(false);
@@ -132,6 +141,6 @@
         private TextBox searchbar;
         private Button detailedSearch;
         private Button malzemeAdd;
-        private Button button1;
+        private ComboBox comboBoxSort;
     }
 }

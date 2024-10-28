@@ -1,11 +1,12 @@
 ﻿using Microsoft.Data.SqlClient;
+using RecipeApp.Forms;
 using RecipeApp.Models;
 
 namespace RecipeApp.Databases
 {
     public class DbProduct
     {
-        private readonly string connString = "Data Source=ENESBERKANT-PC\\SQLEXPRESS;Initial Catalog=TarifApp;Integrated Security=True;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False";
+        private readonly string connString = Main.connString;
         List<Product> products = new List<Product>();
         public List<Product> GetAll()
         {
@@ -59,7 +60,7 @@ namespace RecipeApp.Databases
                 string command = "SELECT * FROM Malzeme Where MalzemeAdi=@name";
                 using (SqlCommand cmd = new SqlCommand(command, conn))
                 {
-                    cmd.Parameters.AddWithValue("@name",name);
+                    cmd.Parameters.AddWithValue("@name", name);
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
@@ -103,7 +104,7 @@ namespace RecipeApp.Databases
                 string command = "SELECT * FROM Malzeme Where MalzemeBirim=@unit";
                 using (SqlCommand cmd = new SqlCommand(command, conn))
                 {
-                    cmd.Parameters.AddWithValue("@unit",unit);
+                    cmd.Parameters.AddWithValue("@unit", unit);
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
@@ -125,7 +126,7 @@ namespace RecipeApp.Databases
                 string command = "SELECT * FROM Malzeme Where BirimFiyat=@costper";
                 using (SqlCommand cmd = new SqlCommand(command, conn))
                 {
-                    cmd.Parameters.AddWithValue("@costper",costper);
+                    cmd.Parameters.AddWithValue("@costper", costper);
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
@@ -159,6 +160,27 @@ namespace RecipeApp.Databases
                     {
                         return false;
                     }
+                }
+            }
+        }
+        public bool Update(Product product)
+        {
+            using(SqlConnection conn = new SqlConnection(connString))
+            {
+                conn.Open();
+                string command = "UPDATE Malzeme SET MalzemeAdi=@MalzemeAdi, ToplamMiktar=@ToplamMiktar, MalzemeBirim=@MalzemeBirim, BirimFiyat=@BirimFiyat WHERE MalzemeID=@Id";
+                using(SqlCommand cmd = new SqlCommand(command,conn))
+                {
+                    cmd.Parameters.AddWithValue("@MalzemeAdi",product.Name);
+                    cmd.Parameters.AddWithValue("@ToplamMiktar",product.Total);
+                    cmd.Parameters.AddWithValue("@MalzemeBirim", product.Unit);
+                    cmd.Parameters.AddWithValue("@BirimFiyat",product.CostPer);
+                    cmd.Parameters.AddWithValue("@Id", product.Id);
+                    int isSuccess=cmd.ExecuteNonQuery();
+                    if(isSuccess == 1)
+                        return true;
+                    else
+                        return false;
                 }
             }
         }

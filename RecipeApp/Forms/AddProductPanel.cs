@@ -1,29 +1,21 @@
-﻿using Microsoft.Data.SqlClient;
-using RecipeApp.Databases;
+﻿using RecipeApp.Databases;
 using RecipeApp.Models;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace RecipeApp.Forms
 {
     public partial class AddProductPanel : Form
     {
-        private int locationX,locationY,sizeX,sizeY;
-        public AddProductPanel(int locationX,int locationY, int sizeX, int sizeY)
+        public AddProductPanel()
         {
             InitializeComponent();
-            this.locationX = locationX;
-            this.locationY = locationY;
-            this.sizeX = sizeX;
-            this.sizeY = sizeY;
+            this.StartPosition = FormStartPosition.CenterScreen;
+            DbProduct db = new DbProduct();
+            List<Product> products = db.GetAll();
+            comboBox1.SelectedIndexChanged -= comboBox1_SelectedIndexChanged;
+            comboBox1.DataSource = products;
+            comboBox1.DisplayMember = "Name";
+            comboBox1.SelectedIndex = -1;
+            comboBox1.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
         }
 
         private void textBox2_TextChanged(object sender, EventArgs e)
@@ -33,7 +25,7 @@ namespace RecipeApp.Forms
                 int test = int.Parse(textBoxProductTotal.Text);
                 labelWarnTotal.Text = "";
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 labelWarnTotal.Text = "Sayı girişi yapınız";
                 textBoxProductTotal.Text = "";
@@ -52,17 +44,32 @@ namespace RecipeApp.Forms
             if (textBoxProductName.Text.Length > 0 && textBoxProductTotal.Text.Length > 0 &&
                 comboBoxProductUnit.SelectedIndex != -1 && textBoxProductCostPer.Text.Length > 0)
             {
-                this.Hide();
-                Product p = new Product(textBoxProductName.Text, textBoxProductTotal.Text, comboBoxProductUnit.SelectedItem.ToString(), double.Parse(textBoxProductCostPer.Text));
-                DbProduct db = new DbProduct();
-                if (db.Save(p))
+                DialogResult dialog = MessageBox.Show("Kayıt tamamlanacaktır.\nOnaylıyor musunuz?", "Emin Misiniz?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (dialog == DialogResult.Yes)
                 {
-                    this.Close();
-                }
-                else
-                {
-                    this.Show();
-                    labelWarnCostPer.Text = "Kayıt Başarısız. Tekrar kaydetmeye çalış.";
+                    this.Hide();
+                    bool isSaved = false;
+                    DbProduct db = new DbProduct();
+                    if (((Button)sender).Text.Equals("Kaydet"))
+                    {
+                        Product p = new Product(textBoxProductName.Text, textBoxProductTotal.Text, comboBoxProductUnit.SelectedItem.ToString(), double.Parse(textBoxProductCostPer.Text));
+                        isSaved = db.Save(p);
+                    }
+                    else if (((Button)sender).Text.Equals("Güncelle"))
+                    {
+                        Product p = new Product(((Product)comboBox1.SelectedItem).Id,textBoxProductName.Text, textBoxProductTotal.Text, comboBoxProductUnit.SelectedItem.ToString(), double.Parse(textBoxProductCostPer.Text));
+                        isSaved = db.Update(p);
+                    }
+                    if (isSaved)
+                    {
+                        this.Close();
+                        this.Dispose();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Kayıt Başarısız. Tekrar kaydetmeye çalış.");
+                        this.Show();
+                    }
                 }
             }
             else
@@ -93,9 +100,16 @@ namespace RecipeApp.Forms
             }
         }
 
-        private void AddProductPanel_Load(object sender, EventArgs e)
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            this.Location = new Point(locationX + (sizeX - this.Size.Width)/2,locationY+(sizeY-this.Size.Height)/2);
+            if(comboBox1.SelectedItem is Product)
+            {
+                textBoxProductName.Text= ((Product)comboBox1.SelectedItem).Name;
+                textBoxProductTotal.Text= ((Product)comboBox1.SelectedItem).Total;
+                textBoxProductCostPer.Text=((Product)comboBox1.SelectedItem).CostPer.ToString();
+                comboBoxProductUnit.SelectedItem=((Product)comboBox1.SelectedItem).Unit.ToString();
+                buttonSave.Text = "Güncelle";
+            } 
         }
     }
 }

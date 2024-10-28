@@ -45,12 +45,13 @@ namespace RecipeApp.Forms
             buttonSave = new Button();
             labelWarnCostPer = new Label();
             labelWarnUnit = new Label();
+            comboBox1 = new ComboBox();
             SuspendLayout();
             // 
             // textBoxProductName
             // 
             textBoxProductName.Font = new Font("Segoe UI", 12F);
-            textBoxProductName.Location = new Point(165, 45);
+            textBoxProductName.Location = new Point(165, 57);
             textBoxProductName.Name = "textBoxProductName";
             textBoxProductName.Size = new Size(310, 34);
             textBoxProductName.TabIndex = 0;
@@ -59,7 +60,7 @@ namespace RecipeApp.Forms
             // 
             labelProductName.AutoSize = true;
             labelProductName.Font = new Font("Segoe UI", 12F);
-            labelProductName.Location = new Point(24, 45);
+            labelProductName.Location = new Point(24, 57);
             labelProductName.Name = "labelProductName";
             labelProductName.Size = new Size(135, 28);
             labelProductName.TabIndex = 1;
@@ -68,7 +69,7 @@ namespace RecipeApp.Forms
             // textBoxProductTotal
             // 
             textBoxProductTotal.Font = new Font("Segoe UI", 12F);
-            textBoxProductTotal.Location = new Point(165, 113);
+            textBoxProductTotal.Location = new Point(165, 125);
             textBoxProductTotal.Name = "textBoxProductTotal";
             textBoxProductTotal.Size = new Size(215, 34);
             textBoxProductTotal.TabIndex = 2;
@@ -81,8 +82,8 @@ namespace RecipeApp.Forms
             comboBoxProductUnit.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxProductUnit.Font = new Font("Segoe UI", 12F);
             comboBoxProductUnit.FormattingEnabled = true;
-            comboBoxProductUnit.Items.AddRange(new object[] { "kg", "litre", "mg", "ml", "gram", "bardak", "çay bardağı", "kaşık", "tatlı kaşığı" });
-            comboBoxProductUnit.Location = new Point(386, 111);
+            comboBoxProductUnit.Items.AddRange(new object[] { "kg", "litre", "mg", "ml", "gram", "adet", "bardak", "çay bardağı", "kaşık", "tatlı kaşığı" });
+            comboBoxProductUnit.Location = new Point(386, 123);
             comboBoxProductUnit.Name = "comboBoxProductUnit";
             comboBoxProductUnit.Size = new Size(89, 36);
             comboBoxProductUnit.TabIndex = 3;
@@ -91,7 +92,7 @@ namespace RecipeApp.Forms
             // 
             labelProductTotal.AutoSize = true;
             labelProductTotal.Font = new Font("Segoe UI", 12F);
-            labelProductTotal.Location = new Point(12, 113);
+            labelProductTotal.Location = new Point(12, 125);
             labelProductTotal.Name = "labelProductTotal";
             labelProductTotal.Size = new Size(147, 28);
             labelProductTotal.TabIndex = 4;
@@ -100,7 +101,7 @@ namespace RecipeApp.Forms
             // labelWarnTotal
             // 
             labelWarnTotal.AutoSize = true;
-            labelWarnTotal.Location = new Point(165, 150);
+            labelWarnTotal.Location = new Point(165, 162);
             labelWarnTotal.Name = "labelWarnTotal";
             labelWarnTotal.Size = new Size(0, 20);
             labelWarnTotal.TabIndex = 5;
@@ -109,7 +110,7 @@ namespace RecipeApp.Forms
             // 
             labelProductCostPer.AutoSize = true;
             labelProductCostPer.Font = new Font("Segoe UI", 12F);
-            labelProductCostPer.Location = new Point(46, 181);
+            labelProductCostPer.Location = new Point(46, 193);
             labelProductCostPer.Name = "labelProductCostPer";
             labelProductCostPer.Size = new Size(113, 28);
             labelProductCostPer.TabIndex = 6;
@@ -118,7 +119,7 @@ namespace RecipeApp.Forms
             // textBoxProductCostPer
             // 
             textBoxProductCostPer.Font = new Font("Segoe UI", 12F);
-            textBoxProductCostPer.Location = new Point(165, 181);
+            textBoxProductCostPer.Location = new Point(165, 193);
             textBoxProductCostPer.Name = "textBoxProductCostPer";
             textBoxProductCostPer.Size = new Size(310, 34);
             textBoxProductCostPer.TabIndex = 7;
@@ -126,7 +127,7 @@ namespace RecipeApp.Forms
             // 
             // buttonCancel
             // 
-            buttonCancel.Location = new Point(60, 257);
+            buttonCancel.Location = new Point(60, 269);
             buttonCancel.Name = "buttonCancel";
             buttonCancel.Size = new Size(133, 56);
             buttonCancel.TabIndex = 8;
@@ -136,7 +137,7 @@ namespace RecipeApp.Forms
             // 
             // buttonSave
             // 
-            buttonSave.Location = new Point(294, 257);
+            buttonSave.Location = new Point(294, 269);
             buttonSave.Name = "buttonSave";
             buttonSave.Size = new Size(133, 56);
             buttonSave.TabIndex = 9;
@@ -147,7 +148,7 @@ namespace RecipeApp.Forms
             // labelWarnCostPer
             // 
             labelWarnCostPer.AutoSize = true;
-            labelWarnCostPer.Location = new Point(165, 218);
+            labelWarnCostPer.Location = new Point(165, 230);
             labelWarnCostPer.Name = "labelWarnCostPer";
             labelWarnCostPer.Size = new Size(0, 20);
             labelWarnCostPer.TabIndex = 10;
@@ -155,10 +156,24 @@ namespace RecipeApp.Forms
             // labelWarnUnit
             // 
             labelWarnUnit.AutoSize = true;
-            labelWarnUnit.Location = new Point(386, 150);
+            labelWarnUnit.Location = new Point(386, 162);
             labelWarnUnit.Name = "labelWarnUnit";
             labelWarnUnit.Size = new Size(0, 20);
             labelWarnUnit.TabIndex = 11;
+            // 
+            // comboBox1
+            // 
+            comboBox1.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            comboBox1.AutoCompleteSource = AutoCompleteSource.ListItems;
+            comboBox1.Dock = DockStyle.Top;
+            comboBox1.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 162);
+            comboBox1.FormattingEnabled = true;
+            comboBox1.Location = new Point(0, 0);
+            comboBox1.Name = "comboBox1";
+            comboBox1.Size = new Size(497, 36);
+            comboBox1.TabIndex = 12;
+            comboBox1.Text = "Malzeme seçin ve düzenleyin";
+            comboBox1.SelectedIndexChanged += comboBox1_SelectedIndexChanged;
             // 
             // AddProductPanel
             // 
@@ -166,6 +181,7 @@ namespace RecipeApp.Forms
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(497, 342);
             ControlBox = false;
+            Controls.Add(comboBox1);
             Controls.Add(labelWarnUnit);
             Controls.Add(labelWarnCostPer);
             Controls.Add(buttonSave);
@@ -179,8 +195,7 @@ namespace RecipeApp.Forms
             Controls.Add(labelProductName);
             Controls.Add(textBoxProductName);
             Name = "AddProductPanel";
-            Text = "MalzemeAddPanel";
-            Load += AddProductPanel_Load;
+            Text = "Malzeme";
             ResumeLayout(false);
             PerformLayout();
         }
@@ -199,5 +214,6 @@ namespace RecipeApp.Forms
         private Button buttonSave;
         private Label labelWarnCostPer;
         private Label labelWarnUnit;
+        private ComboBox comboBox1;
     }
 }

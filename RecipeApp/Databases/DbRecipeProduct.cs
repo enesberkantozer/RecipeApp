@@ -1,11 +1,12 @@
 ﻿using Microsoft.Data.SqlClient;
+using RecipeApp.Forms;
 using RecipeApp.Models;
 
 namespace RecipeApp.Databases
 {
     public class DbRecipeProduct
     {
-        private readonly string connString = "Data Source=ENESBERKANT-PC\\SQLEXPRESS;Initial Catalog=TarifApp;Integrated Security=True;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False";
+        private readonly string connString = Main.connString;
         List<RecipeProduct> recipeProducts = new List<RecipeProduct>();
         public List<RecipeProduct> GetWithRecipeId(int recipeId)
         {
@@ -72,6 +73,28 @@ namespace RecipeApp.Databases
                     cmd.Parameters.AddWithValue("@MalzemeMiktar", Math.Round(malzemeMiktar, 2));
                     int isSucess = cmd.ExecuteNonQuery();
                     if (isSucess == 1)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+
+        public bool Delete(Recipe recipe)
+        {
+            using (SqlConnection conn = new SqlConnection(connString))
+            {
+                conn.Open();
+                string command = "DELETE FROM TarifMalzeme WHERE TarifID=@Id";
+                using (SqlCommand cmd = new SqlCommand(command, conn))
+                {
+                    cmd.Parameters.AddWithValue("@Id", recipe.Id);
+                    int sucess = cmd.ExecuteNonQuery();
+                    if (sucess >= 1)
                     {
                         return true;
                     }

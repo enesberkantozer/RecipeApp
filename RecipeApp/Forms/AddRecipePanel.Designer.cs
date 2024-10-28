@@ -35,17 +35,17 @@
             secondlbl = new Label();
             minutelbl = new Label();
             hourlbl = new Label();
-            hour = new NumericUpDown();
-            minute = new NumericUpDown();
-            second = new NumericUpDown();
+            hourCombo = new NumericUpDown();
+            minuteCombo = new NumericUpDown();
+            secondCombo = new NumericUpDown();
             label3 = new Label();
             timelbl = new Label();
             label7 = new Label();
             label5 = new Label();
             label6 = new Label();
-            button3 = new Button();
+            addProductButton = new Button();
             flowLayoutPanel2 = new FlowLayoutPanel();
-            comboBox1 = new ComboBox();
+            productCombo = new ComboBox();
             label4 = new Label();
             category = new ComboBox();
             label1 = new Label();
@@ -64,15 +64,18 @@
             label8 = new Label();
             label9 = new Label();
             panel1 = new Panel();
+            buttonClose = new Button();
             labelWarn = new Label();
-            button2 = new Button();
-            button1 = new Button();
+            buttonCancel = new Button();
+            buttonOk = new Button();
             timer1 = new System.Windows.Forms.Timer(components);
+            flowLayoutPanel3 = new FlowLayoutPanel();
+            addPictureButton = new Button();
             flowLayoutPanel1.SuspendLayout();
             panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)hour).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)minute).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)second).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)hourCombo).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)minuteCombo).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)secondCombo).BeginInit();
             panel3.SuspendLayout();
             toolStrip1.SuspendLayout();
             panel1.SuspendLayout();
@@ -85,10 +88,9 @@
             flowLayoutPanel1.Controls.Add(panel2);
             flowLayoutPanel1.Controls.Add(panel3);
             flowLayoutPanel1.Controls.Add(panel1);
-            flowLayoutPanel1.Dock = DockStyle.Fill;
             flowLayoutPanel1.Location = new Point(0, 0);
             flowLayoutPanel1.Name = "flowLayoutPanel1";
-            flowLayoutPanel1.Size = new Size(1066, 634);
+            flowLayoutPanel1.Size = new Size(977, 634);
             flowLayoutPanel1.TabIndex = 0;
             // 
             // recipeName
@@ -99,7 +101,7 @@
             recipeName.Location = new Point(3, 3);
             recipeName.Name = "recipeName";
             recipeName.PlaceholderText = "Tarif Adını Giriniz";
-            recipeName.Size = new Size(1037, 31);
+            recipeName.Size = new Size(938, 31);
             recipeName.TabIndex = 1;
             recipeName.TextAlign = HorizontalAlignment.Center;
             // 
@@ -110,30 +112,30 @@
             panel2.Controls.Add(secondlbl);
             panel2.Controls.Add(minutelbl);
             panel2.Controls.Add(hourlbl);
-            panel2.Controls.Add(hour);
-            panel2.Controls.Add(minute);
-            panel2.Controls.Add(second);
+            panel2.Controls.Add(hourCombo);
+            panel2.Controls.Add(minuteCombo);
+            panel2.Controls.Add(secondCombo);
             panel2.Controls.Add(label3);
             panel2.Controls.Add(timelbl);
             panel2.Controls.Add(label7);
             panel2.Controls.Add(label5);
             panel2.Controls.Add(label6);
-            panel2.Controls.Add(button3);
+            panel2.Controls.Add(addProductButton);
             panel2.Controls.Add(flowLayoutPanel2);
-            panel2.Controls.Add(comboBox1);
+            panel2.Controls.Add(productCombo);
             panel2.Controls.Add(label4);
             panel2.Controls.Add(category);
             panel2.Controls.Add(label1);
             panel2.Controls.Add(label2);
             panel2.Location = new Point(3, 40);
             panel2.Name = "panel2";
-            panel2.Size = new Size(1039, 185);
+            panel2.Size = new Size(942, 185);
             panel2.TabIndex = 2;
             // 
             // secondlbl
             // 
             secondlbl.AutoSize = true;
-            secondlbl.Location = new Point(925, 54);
+            secondlbl.Location = new Point(828, 54);
             secondlbl.Name = "secondlbl";
             secondlbl.Size = new Size(52, 20);
             secondlbl.TabIndex = 20;
@@ -142,7 +144,7 @@
             // minutelbl
             // 
             minutelbl.AutoSize = true;
-            minutelbl.Location = new Point(828, 54);
+            minutelbl.Location = new Point(731, 54);
             minutelbl.Name = "minutelbl";
             minutelbl.Size = new Size(54, 20);
             minutelbl.TabIndex = 19;
@@ -151,40 +153,43 @@
             // hourlbl
             // 
             hourlbl.AutoSize = true;
-            hourlbl.Location = new Point(738, 53);
+            hourlbl.Location = new Point(641, 53);
             hourlbl.Name = "hourlbl";
             hourlbl.Size = new Size(38, 20);
             hourlbl.TabIndex = 18;
             hourlbl.Text = "Saat";
             // 
-            // hour
+            // hourCombo
             // 
-            hour.Location = new Point(725, 76);
-            hour.Maximum = new decimal(new int[] { 23, 0, 0, 0 });
-            hour.Name = "hour";
-            hour.Size = new Size(70, 27);
-            hour.TabIndex = 17;
+            hourCombo.Location = new Point(628, 76);
+            hourCombo.Maximum = new decimal(new int[] { 23, 0, 0, 0 });
+            hourCombo.Name = "hourCombo";
+            hourCombo.Size = new Size(70, 27);
+            hourCombo.TabIndex = 17;
+            hourCombo.TextAlign = HorizontalAlignment.Center;
             // 
-            // minute
+            // minuteCombo
             // 
-            minute.Location = new Point(823, 76);
-            minute.Maximum = new decimal(new int[] { 59, 0, 0, 0 });
-            minute.Name = "minute";
-            minute.Size = new Size(70, 27);
-            minute.TabIndex = 16;
+            minuteCombo.Location = new Point(726, 76);
+            minuteCombo.Maximum = new decimal(new int[] { 59, 0, 0, 0 });
+            minuteCombo.Name = "minuteCombo";
+            minuteCombo.Size = new Size(70, 27);
+            minuteCombo.TabIndex = 16;
+            minuteCombo.TextAlign = HorizontalAlignment.Center;
             // 
-            // second
+            // secondCombo
             // 
-            second.Location = new Point(916, 76);
-            second.Maximum = new decimal(new int[] { 59, 0, 0, 0 });
-            second.Name = "second";
-            second.Size = new Size(70, 27);
-            second.TabIndex = 15;
+            secondCombo.Location = new Point(819, 76);
+            secondCombo.Maximum = new decimal(new int[] { 59, 0, 0, 0 });
+            secondCombo.Name = "secondCombo";
+            secondCombo.Size = new Size(70, 27);
+            secondCombo.TabIndex = 15;
+            secondCombo.TextAlign = HorizontalAlignment.Center;
             // 
             // label3
             // 
             label3.Font = new Font("Segoe UI Black", 12F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 162);
-            label3.Location = new Point(800, 104);
+            label3.Location = new Point(703, 104);
             label3.Name = "label3";
             label3.Size = new Size(110, 34);
             label3.TabIndex = 6;
@@ -193,7 +198,7 @@
             // timelbl
             // 
             timelbl.Font = new Font("Segoe UI Black", 12F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 162);
-            timelbl.Location = new Point(823, 9);
+            timelbl.Location = new Point(726, 9);
             timelbl.Name = "timelbl";
             timelbl.Size = new Size(59, 34);
             timelbl.TabIndex = 13;
@@ -201,7 +206,7 @@
             // 
             // label7
             // 
-            label7.Location = new Point(679, 122);
+            label7.Location = new Point(582, 122);
             label7.Name = "label7";
             label7.Size = new Size(355, 27);
             label7.TabIndex = 14;
@@ -219,21 +224,21 @@
             // label6
             // 
             label6.Font = new Font("Segoe UI Black", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 162);
-            label6.Location = new Point(261, 97);
+            label6.Location = new Point(210, 97);
             label6.Name = "label6";
             label6.Size = new Size(107, 25);
             label6.TabIndex = 12;
             label6.Text = "Miktar";
             // 
-            // button3
+            // addProductButton
             // 
-            button3.Location = new Point(371, 54);
-            button3.Name = "button3";
-            button3.Size = new Size(94, 29);
-            button3.TabIndex = 10;
-            button3.Text = "Ekle";
-            button3.UseVisualStyleBackColor = true;
-            button3.Click += button3_Click;
+            addProductButton.Location = new Point(371, 54);
+            addProductButton.Name = "addProductButton";
+            addProductButton.Size = new Size(94, 29);
+            addProductButton.TabIndex = 10;
+            addProductButton.Text = "Ekle";
+            addProductButton.UseVisualStyleBackColor = true;
+            addProductButton.Click += button3_Click;
             // 
             // flowLayoutPanel2
             // 
@@ -243,22 +248,23 @@
             flowLayoutPanel2.Name = "flowLayoutPanel2";
             flowLayoutPanel2.Size = new Size(435, 10);
             flowLayoutPanel2.TabIndex = 8;
+            flowLayoutPanel2.Tag = "addRecipePanel";
             flowLayoutPanel2.ControlAdded += flowLayoutPanel2_Control;
             flowLayoutPanel2.ControlRemoved += flowLayoutPanel2_Control;
             // 
-            // comboBox1
+            // productCombo
             // 
-            comboBox1.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
-            comboBox1.AutoCompleteSource = AutoCompleteSource.ListItems;
-            comboBox1.FormattingEnabled = true;
-            comboBox1.Location = new Point(30, 54);
-            comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(287, 28);
-            comboBox1.TabIndex = 9;
+            productCombo.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
+            productCombo.AutoCompleteSource = AutoCompleteSource.ListItems;
+            productCombo.FormattingEnabled = true;
+            productCombo.Location = new Point(30, 54);
+            productCombo.Name = "productCombo";
+            productCombo.Size = new Size(287, 28);
+            productCombo.TabIndex = 9;
             // 
             // label4
             // 
-            label4.Location = new Point(679, 26);
+            label4.Location = new Point(582, 26);
             label4.Name = "label4";
             label4.Size = new Size(355, 27);
             label4.TabIndex = 7;
@@ -269,7 +275,7 @@
             category.DropDownStyle = ComboBoxStyle.DropDownList;
             category.FormattingEnabled = true;
             category.Items.AddRange(new object[] { "Ana Yemek", "Ara Öğün", "Tatlı", "Salata", "Çorba", "İçecek" });
-            category.Location = new Point(760, 152);
+            category.Location = new Point(663, 152);
             category.Name = "category";
             category.Size = new Size(179, 28);
             category.TabIndex = 5;
@@ -277,7 +283,7 @@
             // label1
             // 
             label1.Font = new Font("Segoe UI Black", 12F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 162);
-            label1.Location = new Point(274, 9);
+            label1.Location = new Point(239, 9);
             label1.Name = "label1";
             label1.Size = new Size(129, 34);
             label1.TabIndex = 1;
@@ -287,7 +293,7 @@
             // 
             label2.Location = new Point(3, 26);
             label2.Name = "label2";
-            label2.Size = new Size(670, 27);
+            label2.Size = new Size(575, 27);
             label2.TabIndex = 3;
             label2.Text = "__________________________________________________________________________________________________________________________";
             // 
@@ -299,13 +305,13 @@
             panel3.Controls.Add(label9);
             panel3.Location = new Point(3, 231);
             panel3.Name = "panel3";
-            panel3.Size = new Size(986, 308);
+            panel3.Size = new Size(942, 308);
             panel3.TabIndex = 3;
             // 
             // description
             // 
             description.HideSelection = false;
-            description.Location = new Point(50, 76);
+            description.Location = new Point(9, 76);
             description.Name = "description";
             description.Size = new Size(924, 226);
             description.TabIndex = 0;
@@ -317,7 +323,7 @@
             toolStrip1.Dock = DockStyle.None;
             toolStrip1.ImageScalingSize = new Size(20, 20);
             toolStrip1.Items.AddRange(new ToolStripItem[] { fontSize, toolStripSeparator1, boldButton, italicButton, underlineButton, toolStripSeparator2, fontFamily, toolStripButton4 });
-            toolStrip1.Location = new Point(50, 42);
+            toolStrip1.Location = new Point(9, 42);
             toolStrip1.Name = "toolStrip1";
             toolStrip1.Size = new Size(924, 31);
             toolStrip1.TabIndex = 1;
@@ -395,7 +401,7 @@
             // label8
             // 
             label8.Font = new Font("Segoe UI Black", 12F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 162);
-            label8.Location = new Point(459, 4);
+            label8.Location = new Point(418, 4);
             label8.Name = "label8";
             label8.Size = new Size(120, 34);
             label8.TabIndex = 4;
@@ -403,7 +409,7 @@
             // 
             // label9
             // 
-            label9.Location = new Point(53, 21);
+            label9.Location = new Point(12, 21);
             label9.Name = "label9";
             label9.Size = new Size(924, 27);
             label9.TabIndex = 5;
@@ -411,13 +417,25 @@
             // 
             // panel1
             // 
+            panel1.Controls.Add(buttonClose);
             panel1.Controls.Add(labelWarn);
-            panel1.Controls.Add(button2);
-            panel1.Controls.Add(button1);
+            panel1.Controls.Add(buttonCancel);
+            panel1.Controls.Add(buttonOk);
             panel1.Location = new Point(3, 545);
             panel1.Name = "panel1";
-            panel1.Size = new Size(1037, 86);
+            panel1.Size = new Size(942, 86);
             panel1.TabIndex = 0;
+            // 
+            // buttonClose
+            // 
+            buttonClose.Location = new Point(12, 19);
+            buttonClose.Name = "buttonClose";
+            buttonClose.Size = new Size(126, 53);
+            buttonClose.TabIndex = 3;
+            buttonClose.Text = "Kapat";
+            buttonClose.UseVisualStyleBackColor = true;
+            buttonClose.Visible = false;
+            buttonClose.Click += buttonClose_Click;
             // 
             // labelWarn
             // 
@@ -428,25 +446,25 @@
             labelWarn.Size = new Size(424, 68);
             labelWarn.TabIndex = 2;
             // 
-            // button2
+            // buttonCancel
             // 
-            button2.Location = new Point(725, 19);
-            button2.Name = "button2";
-            button2.Size = new Size(126, 53);
-            button2.TabIndex = 1;
-            button2.Text = "İptal";
-            button2.UseVisualStyleBackColor = true;
-            button2.Click += button2_Click;
+            buttonCancel.Location = new Point(660, 19);
+            buttonCancel.Name = "buttonCancel";
+            buttonCancel.Size = new Size(126, 53);
+            buttonCancel.TabIndex = 1;
+            buttonCancel.Text = "İptal";
+            buttonCancel.UseVisualStyleBackColor = true;
+            buttonCancel.Click += button2_Click;
             // 
-            // button1
+            // buttonOk
             // 
-            button1.Location = new Point(873, 19);
-            button1.Name = "button1";
-            button1.Size = new Size(126, 53);
-            button1.TabIndex = 0;
-            button1.Text = "Kaydet";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
+            buttonOk.Location = new Point(807, 19);
+            buttonOk.Name = "buttonOk";
+            buttonOk.Size = new Size(126, 53);
+            buttonOk.TabIndex = 0;
+            buttonOk.Text = "Kaydet";
+            buttonOk.UseVisualStyleBackColor = true;
+            buttonOk.Click += button1_Click;
             // 
             // timer1
             // 
@@ -454,23 +472,44 @@
             timer1.Interval = 5000;
             timer1.Tick += timer1_Tick;
             // 
+            // flowLayoutPanel3
+            // 
+            flowLayoutPanel3.AutoScroll = true;
+            flowLayoutPanel3.BorderStyle = BorderStyle.FixedSingle;
+            flowLayoutPanel3.Location = new Point(983, 43);
+            flowLayoutPanel3.Name = "flowLayoutPanel3";
+            flowLayoutPanel3.Size = new Size(403, 591);
+            flowLayoutPanel3.TabIndex = 1;
+            // 
+            // addPictureButton
+            // 
+            addPictureButton.Location = new Point(1138, 8);
+            addPictureButton.Name = "addPictureButton";
+            addPictureButton.Size = new Size(94, 29);
+            addPictureButton.TabIndex = 2;
+            addPictureButton.Text = "Resim Ekle";
+            addPictureButton.UseVisualStyleBackColor = true;
+            addPictureButton.Click += addPicture_Click;
+            // 
             // AddRecipePanel
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1066, 634);
+            ClientSize = new Size(1392, 634);
             ControlBox = false;
+            Controls.Add(addPictureButton);
+            Controls.Add(flowLayoutPanel3);
             Controls.Add(flowLayoutPanel1);
             Name = "AddRecipePanel";
-            Text = "AddRecipePanel";
+            Text = "Tarif";
             Load += AddRecipePanel_Load;
             flowLayoutPanel1.ResumeLayout(false);
             flowLayoutPanel1.PerformLayout();
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)hour).EndInit();
-            ((System.ComponentModel.ISupportInitialize)minute).EndInit();
-            ((System.ComponentModel.ISupportInitialize)second).EndInit();
+            ((System.ComponentModel.ISupportInitialize)hourCombo).EndInit();
+            ((System.ComponentModel.ISupportInitialize)minuteCombo).EndInit();
+            ((System.ComponentModel.ISupportInitialize)secondCombo).EndInit();
             panel3.ResumeLayout(false);
             toolStrip1.ResumeLayout(false);
             toolStrip1.PerformLayout();
@@ -482,8 +521,8 @@
 
         private FlowLayoutPanel flowLayoutPanel1;
         private Panel panel1;
-        private Button button2;
-        private Button button1;
+        private Button buttonCancel;
+        private Button buttonOk;
         private TextBox recipeName;
         private Panel panel2;
         private Label label1;
@@ -494,8 +533,8 @@
         private ComboBox category;
         private Label label4;
         private FlowLayoutPanel flowLayoutPanel2;
-        private Button button3;
-        private ComboBox comboBox1;
+        private Button addProductButton;
+        private ComboBox productCombo;
         private Label label6;
         private Label label5;
         private Label labelWarn;
@@ -505,9 +544,9 @@
         private Label secondlbl;
         private Label minutelbl;
         private Label hourlbl;
-        private NumericUpDown hour;
-        private NumericUpDown minute;
-        private NumericUpDown second;
+        private NumericUpDown hourCombo;
+        private NumericUpDown minuteCombo;
+        private NumericUpDown secondCombo;
         private ToolStrip toolStrip1;
         private ToolStripSeparator toolStripSeparator1;
         private ToolStripButton boldButton;
@@ -519,5 +558,8 @@
         private ToolStripComboBox fontSize;
         private Label label8;
         private Label label9;
+        private FlowLayoutPanel flowLayoutPanel3;
+        private Button addPictureButton;
+        private Button buttonClose;
     }
 }

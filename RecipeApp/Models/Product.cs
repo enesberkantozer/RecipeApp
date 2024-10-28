@@ -22,5 +22,12 @@
             this.Unit = unit;
             this.CostPer = costper;
         }
+        public override bool Equals(object? obj)
+        {
+            if (obj == null || GetType() != obj.GetType()) return false;
+
+            if (((Product)obj).Id == Id) { return true; }
+            else { return false; }
+        }
     }
 }

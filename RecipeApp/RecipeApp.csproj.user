@@ -7,14 +7,20 @@
     <Compile Update="Forms\AddRecipePanel.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Update="Forms\DetailedSearch.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Forms\Main.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Update="Templates\AddProductinRecipe.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="Templates\PanelTemplate.cs">
-      <SubType>Component</SubType>
+    <Compile Update="Templates\PanelTemp.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Templates\PictureBoxes.cs">
+      <SubType>UserControl</SubType>
     </Compile>
   </ItemGroup>
 </Project>

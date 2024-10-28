@@ -1,11 +1,14 @@
 ﻿using Microsoft.Data.SqlClient;
+using Microsoft.IdentityModel.Tokens;
+using RecipeApp.Forms;
+using RecipeApp.Library;
 using RecipeApp.Models;
 
 namespace RecipeApp.Databases
 {
     public class DbRecipe
     {
-        private readonly string connString = "Data Source=ENESBERKANT-PC\\SQLEXPRESS;Initial Catalog=TarifApp;Integrated Security=True;Connect Timeout=30;Encrypt=True;Trust Server Certificate=True;Application Intent=ReadWrite;Multi Subnet Failover=False";
+        private readonly string connString = Main.connString;
         List<Recipe> recipes = new List<Recipe>();
         public List<Recipe> GetAll()
         {
@@ -138,6 +141,27 @@ namespace RecipeApp.Databases
             }
             return recipes;
         }
+        public List<string> GetCategoryList()
+        {
+            List<string> list = new List<string>();
+            using (SqlConnection conn = new SqlConnection(connString))
+            {
+                conn.Open();
+                string command = "SELECT Kategori FROM Tarif";
+                using (SqlCommand cmd = new SqlCommand(command, conn))
+                {
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            string str = (string)reader["Kategori"];
+                            list.Add(str);
+                        }
+                    }
+                }
+            }
+            return list;
+        }
         public bool Save(Recipe recipe)
         {
             using (SqlConnection conn = new SqlConnection(connString))
@@ -162,27 +186,132 @@ namespace RecipeApp.Databases
                 }
             }
         }
-
-        public List<Recipe> SearchRecipe(string search)
+        public bool Update(Recipe recipe)
         {
-            recipes.Clear();
-            using(SqlConnection conn = new SqlConnection(connString))
+            using (SqlConnection conn = new SqlConnection(connString))
             {
                 conn.Open();
-                string command = "SELECT * FROM Tarif WHERE TarifAdi LIKE @search";
-                using(SqlCommand cmd = new SqlCommand(command,conn))
+                string command = "UPDATE Tarif SET TarifAdi=@TarifAdi, Kategori=@Kategori, HazirlanmaSuresi=@HazirlanmaSuresi,Talimatlar=@Talimatlar WHERE TarifID=@Id";
+                using (SqlCommand cmd = new SqlCommand(command, conn))
                 {
-                    cmd.Parameters.AddWithValue("@search","%"+search+"%");
-                    using(SqlDataReader reader = cmd.ExecuteReader())
+                    cmd.Parameters.AddWithValue("@TarifAdi", recipe.Name);
+                    cmd.Parameters.AddWithValue("@Kategori", recipe.Category);
+                    cmd.Parameters.AddWithValue("@HazirlanmaSuresi", recipe.Time);
+                    cmd.Parameters.AddWithValue("@Talimatlar", recipe.Description);
+                    cmd.Parameters.AddWithValue("@Id", recipe.Id);
+                    int isSucess = cmd.ExecuteNonQuery();
+                    if (isSucess == 1)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+        public bool Delete(Recipe recipe)
+        {
+            using (SqlConnection conn = new SqlConnection(connString))
+            {
+                conn.Open();
+                string command = "DELETE FROM Tarif WHERE TarifID=@Id";
+                using (SqlCommand cmd = new SqlCommand(command, conn))
+                {
+                    cmd.Parameters.AddWithValue("@Id", recipe.Id);
+                    int sucess = cmd.ExecuteNonQuery();
+                    if (sucess >= 1)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+        }
+        public List<Recipe> SearchRecipe(string? name=null, List<string>? category=null, int? minTime=0, int? maxTime=int.MaxValue,
+            double? minCost=0, double? maxCost=int.MaxValue, List<Product>? products=null)
+        {
+            if(products.IsNullOrEmpty())
+                products=new List<Product>();
+            if(category.IsNullOrEmpty())
+                category=new List<string>();
+            recipes.Clear();
+            using (SqlConnection conn = new SqlConnection(connString))
+            {
+                conn.Open();
+                string command = "SELECT * " +
+                    "FROM Tarif " +
+                    "WHERE HazirlanmaSuresi BETWEEN @minTime AND @maxTime";
+                if(name != null)
+                {
+                    command += " AND TarifAdi LIKE @name";
+                }
+                if(!(category.IsNullOrEmpty()))
+                {
+                    command += " AND Kategori IN (";
+                    for(int i=0; i<category.Count; i++)
+                    {
+                        command += $"@category{i}";
+                        if (i < category.Count - 1)
+                            command += ", ";
+                    }
+                    command += ")";
+                }
+                using (SqlCommand cmd = new SqlCommand(command, conn))
+                {
+                    cmd.Parameters.AddWithValue("@minTime", minTime);
+                    cmd.Parameters.AddWithValue("@maxTime", maxTime);
+                    if(name !=null)
+                        cmd.Parameters.AddWithValue("@name", "%" + name + "%");
+                    if (!(category.IsNullOrEmpty()))
+                    {
+                        int c = 0;
+                        category.ForEach(x => { cmd.Parameters.AddWithValue($"@category{c}", x); c++; });
+                    }
+                    using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
                         {
-                            Recipe recipe=new Recipe((int)reader["TarifID"], (string)reader["TarifAdi"], (string)reader["Kategori"], (int)reader["HazirlanmaSuresi"], (string)reader["Talimatlar"]);
+                            Recipe recipe = new Recipe((int)reader["TarifID"], (string)reader["TarifAdi"], (string)reader["Kategori"], (int)reader["HazirlanmaSuresi"], (string)reader["Talimatlar"]);
                             recipes.Add(recipe);
                         }
                     }
                 }
             }
+            List<Recipe> removeList= new List<Recipe>();
+            foreach (Recipe r in recipes)
+            {
+                MainLoad mainLoad = new MainLoad();
+                double cost=mainLoad.GetCost(r);
+                if(!(cost >=minCost && cost <= maxCost))
+                {
+                    removeList.Add(r);
+                    continue;
+                }
+                DbRecipeProduct dbRecipeProduct = new DbRecipeProduct();
+                List<RecipeProduct> recipeProducts = dbRecipeProduct.GetWithRecipeId(r.Id);
+                int productControlCounter = 0;
+                foreach (Product p in products)
+                {
+                    foreach (RecipeProduct rp in recipeProducts)
+                    {
+                        if(rp.Product.Equals(p))
+                        {
+                            productControlCounter++;
+                            break;
+                        }
+                    }
+                }
+                if (!(productControlCounter == products.Count))
+                {
+                    removeList.Add(r);
+                }
+            }
+            recipes.RemoveAll(x => removeList.Select(y => y.Id).ToList().Contains(x.Id));
             return recipes;
         }
     }
