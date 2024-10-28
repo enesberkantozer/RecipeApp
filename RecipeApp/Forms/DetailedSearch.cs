@@ -38,7 +38,7 @@ namespace RecipeApp.Forms
                 };
                 categoryFlowLayoutPanel.Controls.Add(cbox);
             });
-            minCost.Maximum=decimal.MaxValue;
+            minCost.Maximum = decimal.MaxValue;
             maxCost.Maximum = decimal.MaxValue;
         }
 
@@ -65,10 +65,19 @@ namespace RecipeApp.Forms
         private void DetailedSearch_Activated(object sender, EventArgs e)
         {
             textBox1.Text = Main.srchName;
+            comboBox1.DataSource = Main.srchAllProducts.ToArray();
+            comboBox1.DisplayMember = "Name";
+            comboBox1.SelectedIndex = -1;
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
+            categoryFlowLayoutPanel.Controls.OfType<CheckBox>().ToList().ForEach(checkBox => {
+                if(checkBox.Checked)
+                    checkBox.Checked = false;
+            });
+            searchFlowProduct.Controls.Clear();
+
             Main.srchName = null;
             Main.srchMinTime = 0;
             Main.srchMaxTime = int.MaxValue;

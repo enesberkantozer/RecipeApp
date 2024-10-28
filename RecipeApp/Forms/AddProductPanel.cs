@@ -39,7 +39,7 @@ namespace RecipeApp.Forms
             this.Close();
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private async void button2_Click(object sender, EventArgs e)
         {
             if (textBoxProductName.Text.Length > 0 && textBoxProductTotal.Text.Length > 0 &&
                 comboBoxProductUnit.SelectedIndex != -1 && textBoxProductCostPer.Text.Length > 0)
@@ -53,7 +53,7 @@ namespace RecipeApp.Forms
                     if (((Button)sender).Text.Equals("Kaydet"))
                     {
                         Product p = new Product(textBoxProductName.Text, textBoxProductTotal.Text, comboBoxProductUnit.SelectedItem.ToString(), double.Parse(textBoxProductCostPer.Text));
-                        isSaved = db.Save(p);
+                        isSaved = await db.Save(p);
                     }
                     else if (((Button)sender).Text.Equals("Güncelle"))
                     {
@@ -62,6 +62,12 @@ namespace RecipeApp.Forms
                     }
                     if (isSaved)
                     {
+                        Main.srchAllProducts.Clear();
+                        Main.srchAllProducts=db.GetAll();
+                        Main.srchAllProducts.ForEach(x => {
+                            if (Main.srchProducts.ContainsKey(x))
+                                Main.srchAllProducts.Remove(x);
+                        });
                         this.Close();
                         this.Dispose();
                     }

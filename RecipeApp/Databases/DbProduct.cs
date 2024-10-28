@@ -139,11 +139,11 @@ namespace RecipeApp.Databases
             }
             return products;
         }
-        public bool Save(Product product)
+        public async Task<bool> Save(Product product)
         {
             using (SqlConnection conn = new SqlConnection(connString))
             {
-                conn.Open();
+                await conn.OpenAsync();
                 string command = "INSERT INTO Malzeme (MalzemeAdi,ToplamMiktar,MalzemeBirim,BirimFiyat) VALUES (@MalzemeAdi,@ToplamMiktar,@MalzemeBirim,@BirimFiyat)";
                 using (SqlCommand cmd = new SqlCommand(command, conn))
                 {

@@ -60,11 +60,11 @@ namespace RecipeApp.Databases
             }
             return recipeProducts;
         }
-        public bool Save(Recipe tarif, Product malzeme, double malzemeMiktar)
+        public async Task<bool> Save(Recipe tarif, Product malzeme, double malzemeMiktar)
         {
             using (SqlConnection conn = new SqlConnection(connString))
             {
-                conn.Open();
+                await conn.OpenAsync();
                 string command = "INSERT INTO TarifMalzeme (TarifID,MalzemeID,MalzemeMiktar) VALUES (@TarifId,@MalzemeId,@MalzemeMiktar)";
                 using (SqlCommand cmd = new SqlCommand(command, conn))
                 {
@@ -84,11 +84,11 @@ namespace RecipeApp.Databases
             }
         }
 
-        public bool Delete(Recipe recipe)
+        public async Task<bool> Delete(Recipe recipe)
         {
             using (SqlConnection conn = new SqlConnection(connString))
             {
-                conn.Open();
+                await conn.OpenAsync();
                 string command = "DELETE FROM TarifMalzeme WHERE TarifID=@Id";
                 using (SqlCommand cmd = new SqlCommand(command, conn))
                 {

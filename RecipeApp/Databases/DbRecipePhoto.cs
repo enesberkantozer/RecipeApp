@@ -32,11 +32,11 @@ namespace RecipeApp.Databases
             return recipePhotos;
         }
 
-        public bool Save(RecipePhoto recipePhoto)
+        public async Task<bool> Save(RecipePhoto recipePhoto)
         {
             using (SqlConnection conn = new SqlConnection(connString))
             {
-                conn.Open();
+                await conn.OpenAsync();
                 string command = "INSERT INTO Foto (TarifID, Foto) VALUES (@TarifId, @Foto)";
                 using (SqlCommand cmd = new SqlCommand(command, conn))
                 {
@@ -57,11 +57,11 @@ namespace RecipeApp.Databases
         }
 
 
-        public bool Delete(Recipe recipe)
+        public async Task<bool> Delete(Recipe recipe)
         {
             using (SqlConnection conn = new SqlConnection(connString))
             {
-                conn.Open();
+                await conn.OpenAsync();
                 string command = "DELETE FROM Foto WHERE TarifID=@Id";
                 using (SqlCommand cmd = new SqlCommand(command, conn))
                 {

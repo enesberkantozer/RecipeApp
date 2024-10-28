@@ -158,7 +158,7 @@ namespace RecipeApp.Library
                 IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Malzeme' AND xtype='U')
                 CREATE TABLE Malzeme (
                     MalzemeID INT PRIMARY KEY IDENTITY,
-                    MalzemeAdi VARCHAR(100) NOT NULL UNIQUE,
+                    MalzemeAdi VARCHAR(100) NOT NULL,
                     ToplamMiktar VARCHAR(100) NOT NULL,
                     MalzemeBirim VARCHAR(20) NOT NULL,
                     BirimFiyat FLOAT NOT NULL

@@ -126,7 +126,7 @@ namespace RecipeApp.Forms
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private async void button1_Click(object sender, EventArgs e)
         {
             if (((Button)sender).Text.Equals("Sil") == false)
             {
@@ -172,7 +172,7 @@ namespace RecipeApp.Forms
                     if (((Button)sender).Text.Equals("Kaydet"))
                     {
                         recipe = new Recipe(recipeName.Text, category.SelectedItem.ToString(), time, description.Rtf);
-                        isSavedRecipe = dbRecipe.Save(recipe);
+                        isSavedRecipe = await dbRecipe.Save(recipe);
                     }
                     else if (((Button)sender).Text.Equals("Güncelle"))
                     {
@@ -180,7 +180,7 @@ namespace RecipeApp.Forms
                         recipe.Category = category.SelectedItem.ToString();
                         recipe.Time = time;
                         recipe.Description = description.Rtf;
-                        isSavedRecipe = dbRecipe.Update(recipe);
+                        isSavedRecipe = await dbRecipe.Update(recipe);
                         foreach (string s in deleteImages)
                         {
                             File.Delete(s);
@@ -197,20 +197,23 @@ namespace RecipeApp.Forms
                         }
                     }
                     DbRecipeProduct dbRecipeProduct = new DbRecipeProduct();
-                    dbRecipeProduct.Delete(recipe);
+                    await dbRecipeProduct.Delete(recipe);
                     int savedProductCount = 0;
                     foreach (Product p in addedProducts.Keys)
                     {
-                        bool isSavedRecipeProduct = dbRecipeProduct.Save(recipe, p, addedProducts[p]);
-                        if (isSavedRecipeProduct)
+                        if(isSavedRecipe)
                         {
-                            savedProductCount++;
+                            bool isSavedRecipeProduct = await dbRecipeProduct.Save(recipe, p, addedProducts[p]);
+                            if (isSavedRecipeProduct)
+                            {
+                                savedProductCount++;
+                            }
                         }
                     }
                     int savedPhotoCount = 0;
                     if (flowLayoutPanel3.Controls.Count > 0)
                     {
-                        dbRecipePhoto.Delete(recipe);
+                        await dbRecipePhoto.Delete(recipe);
                         string saveDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "UserData", "img", "Recipes", recipe.Id.ToString());
                         if (!Directory.Exists(saveDir))
                         {
@@ -222,10 +225,13 @@ namespace RecipeApp.Forms
                             string destFile = Path.Combine(saveDir, (i.ToString() + Path.GetExtension(imgPaths[i])));
                             File.Copy(imgPaths[i], destFile, true);
                             RecipePhoto recipePhoto = new RecipePhoto(recipe, destFile);
-                            bool sucess = dbRecipePhoto.Save(recipePhoto);
-                            if (sucess)
+                            if(isSavedRecipe)
                             {
-                                savedPhotoCount++;
+                                bool sucess = await dbRecipePhoto.Save(recipePhoto);
+                                if (sucess)
+                                {
+                                    savedPhotoCount++;
+                                }
                             }
                         }
                     }
@@ -259,9 +265,9 @@ namespace RecipeApp.Forms
                         }
                     }catch (Exception) { }
                     DbRecipeProduct dbRecipeProduct = new DbRecipeProduct();
-                    bool is0 = dbRecipeProduct.Delete(recipe);
+                    bool is0 = await dbRecipeProduct.Delete(recipe);
                     DbRecipe dbRecipe = new DbRecipe();
-                    bool is1 = dbRecipe.Delete(recipe);
+                    bool is1 = await dbRecipe.Delete(recipe);
                     if (is0 && is1)
                     {
                         MessageBox.Show("Başarıyla Silindi");

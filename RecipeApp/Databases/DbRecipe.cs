@@ -162,11 +162,11 @@ namespace RecipeApp.Databases
             }
             return list;
         }
-        public bool Save(Recipe recipe)
+        public async Task<bool> Save(Recipe recipe)
         {
             using (SqlConnection conn = new SqlConnection(connString))
             {
-                conn.Open();
+                await conn.OpenAsync();
                 string command = "INSERT INTO Tarif (TarifAdi,Kategori,HazirlanmaSuresi,Talimatlar) VALUES (@TarifAdi,@Kategori,@HazirlanmaSuresi,@Talimatlar)";
                 using (SqlCommand cmd = new SqlCommand(command, conn))
                 {
@@ -186,11 +186,11 @@ namespace RecipeApp.Databases
                 }
             }
         }
-        public bool Update(Recipe recipe)
+        public async Task<bool> Update(Recipe recipe)
         {
             using (SqlConnection conn = new SqlConnection(connString))
             {
-                conn.Open();
+                await conn.OpenAsync();
                 string command = "UPDATE Tarif SET TarifAdi=@TarifAdi, Kategori=@Kategori, HazirlanmaSuresi=@HazirlanmaSuresi,Talimatlar=@Talimatlar WHERE TarifID=@Id";
                 using (SqlCommand cmd = new SqlCommand(command, conn))
                 {
@@ -211,11 +211,11 @@ namespace RecipeApp.Databases
                 }
             }
         }
-        public bool Delete(Recipe recipe)
+        public async Task<bool> Delete(Recipe recipe)
         {
             using (SqlConnection conn = new SqlConnection(connString))
             {
-                conn.Open();
+                await conn.OpenAsync();
                 string command = "DELETE FROM Tarif WHERE TarifID=@Id";
                 using (SqlCommand cmd = new SqlCommand(command, conn))
                 {
