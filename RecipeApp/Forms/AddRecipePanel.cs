@@ -381,7 +381,7 @@ namespace RecipeApp.Forms
             category.SelectedItem = recipe.Category;
             category.Enabled = false;
             toolStrip1.Visible = false;
-            description.Rtf = recipe.Description;
+            description.Text = recipe.Description;
             description.ReadOnly = true;
             buttonCancel.Text = "Düzenle";
             buttonOk.Text = "Sil";

@@ -147,7 +147,7 @@ namespace RecipeApp.Databases
             using (SqlConnection conn = new SqlConnection(connString))
             {
                 conn.Open();
-                string command = "SELECT Kategori FROM Tarif";
+                string command = "SELECT DISTINCT Kategori FROM Tarif";
                 using (SqlCommand cmd = new SqlCommand(command, conn))
                 {
                     using (SqlDataReader reader = cmd.ExecuteReader())

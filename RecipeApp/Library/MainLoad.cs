@@ -158,17 +158,17 @@ namespace RecipeApp.Library
                 IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Malzeme' AND xtype='U')
                 CREATE TABLE Malzeme (
                     MalzemeID INT PRIMARY KEY IDENTITY,
-                    MalzemeAdi VARCHAR(100) NOT NULL,
-                    ToplamMiktar VARCHAR(100) NOT NULL,
-                    MalzemeBirim VARCHAR(20) NOT NULL,
+                    MalzemeAdi NVARCHAR(100) NOT NULL,
+                    ToplamMiktar NVARCHAR(100) NOT NULL,
+                    MalzemeBirim NVARCHAR(20) NOT NULL,
                     BirimFiyat FLOAT NOT NULL
                 );
 
                 IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Tarif' AND xtype='U')
                 CREATE TABLE Tarif (
                     TarifID INT PRIMARY KEY IDENTITY,
-                    TarifAdi VARCHAR(100) NOT NULL,
-                    Kategori VARCHAR(50) NOT NULL,
+                    TarifAdi NVARCHAR(100) NOT NULL,
+                    Kategori NVARCHAR(50) NOT NULL,
                     HazirlanmaSuresi INT NOT NULL,
                     Talimatlar TEXT NOT NULL
                 );

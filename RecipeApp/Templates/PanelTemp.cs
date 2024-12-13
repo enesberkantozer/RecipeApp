@@ -1,4 +1,5 @@
-﻿using RecipeApp.Databases;
+﻿using Microsoft.IdentityModel.Tokens;
+using RecipeApp.Databases;
 using RecipeApp.Forms;
 using RecipeApp.Library;
 using RecipeApp.Models;
@@ -20,8 +21,8 @@ namespace RecipeApp.Templates
             this.Recipe = recipe;
             this.Time = recipe.Time;
             this.Cost = mainLoad.GetCost(recipe);
-            this.MissingCost=mainLoad.GetMissingCost(recipe, products);
             this.Percent=mainLoad.GetPercent(recipe, products);
+            this.MissingCost=mainLoad.GetMissingCost(recipe, products);
             this.Tag = recipe.Id;
 
             try
